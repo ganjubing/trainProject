@@ -1,24 +1,24 @@
 <template>
   <div class="speed">
-    <span style="position: absolute;right:170px;top:15px;font-weight: bolder;font-size: 30px;">{{timeLength}}</span>
+    <span>{{timeLength}}</span>
     <img style="position:absolute;right:4%;top:10%;" src="../../assets/star.png" @click="timerStar" />
     <img src="../../assets/speed1/ready.png" style="width:320px;height:240px;position:absolute;top:35%;left:42%;" v-if="isReady" />
     <ul v-else id="ulList">
       <li @click="checkItem(items[0],0)" v-if="items.length>0"><img :src="items[0].img" :id="items[0].value" />
-      <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[0].value"/>
-      <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[0].value"/>
+        <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[0].value" />
+        <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[0].value" />
       </li>
-      <li @click="checkItem(items[1],1)" v-if="items.length>0"><img :src="items[1].img" :id="items[1].value"/>
-      <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[1].value"/>
-      <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[1].value"/>
+      <li @click="checkItem(items[1],1)" v-if="items.length>0"><img :src="items[1].img" :id="items[1].value" />
+        <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[1].value" />
+        <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[1].value" />
       </li>
-      <li @click="checkItem(items[2],2)" v-if="items.length>0"><img :src="items[2].img" :id="items[2].value"/>
-      <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[2].value"/>
-      <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[2].value"/>
+      <li @click="checkItem(items[2],2)" v-if="items.length>0"><img :src="items[2].img" :id="items[2].value" />
+        <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[2].value" />
+        <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[2].value" />
       </li>
-      <li @click="checkItem(items[3],3)" v-if="items.length>0"><img :src="items[3].img" :id="items[3].value"/>
-      <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[3].value"/>
-      <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[3].value"/>
+      <li @click="checkItem(items[3],3)" v-if="items.length>0"><img :src="items[3].img" :id="items[3].value" />
+        <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[3].value" />
+        <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[3].value" />
       </li>
     </ul>
     <span style="position: absolute;right:49%;bottom:8%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.name}}</span>
@@ -41,13 +41,13 @@
         intervalTime: null,
         intervalList: null,
         isReady: false,
-        isAnswerRight:null,
+        isAnswerRight: null,
         answerItem: {
           name: '水果',
           value: 1
         },
-        answerRightItem:{},//正确项
-        selectedItem:{},//用户选着项
+        answerRightItem: {}, //正确项
+        selectedItem: {}, //用户选着项
         rightItems: [{
           name: '苹果',
           img: require("../../assets/speed1/images/apple.jpg"),
@@ -133,16 +133,16 @@
         }, 1000);
         var otherArr = getRandomArr(this.otherItems, 3);
         var rightItem = getRandomArr(this.rightItems, 1);
-        this.answerRightItem=rightItem[0];
+        this.answerRightItem = rightItem[0];
         this.items = [];
         otherArr.map(n => this.items.push(n));
         rightItem.map(n => this.items.push(n));
         randonArr(this.items);
         setTimeout(function() {
           //遮挡图片
-          var lis=document.querySelectorAll('#ulList>li>img');
-          for(var i=0;i<lis.length;i++){
-            lis[i].src=unkow;
+          var lis = document.querySelectorAll('#ulList>li>img');
+          for (var i = 0; i < lis.length; i++) {
+            lis[i].src = unkow;
           }
         }, 2000);
 
@@ -156,24 +156,24 @@
           randonArr(this.items);
         }, 2000);*/
       },
-   checkItem(obj,index){
-     this.selectedItem=obj;
-     var lis=document.querySelectorAll('#ulList>li>img');
-    lis[index].src=obj.img;
-     if(this.answerItem.value===obj.value){
-       this.isAnswerRight=true;
-     }else{
-       this.isAnswerRight=false;
-       var id=this.answerRightItem.value;
-       console.log(id);
-       document.getElementById(id).src=this.answerRightItem.img;
-     }
-     setTimeout(()=>{
-       this.changeArr();
-       this.isAnswerRight=null;
-     },2000);
-     //this.changeArr();
-   },
+      checkItem(obj, index) {
+        this.selectedItem = obj;
+        var lis = document.querySelectorAll('#ulList>li>img');
+        lis[index].src = obj.img;
+        if (this.answerItem.value === obj.value) {
+          this.isAnswerRight = true;
+        } else {
+          this.isAnswerRight = false;
+          var id = this.answerRightItem.value;
+          console.log(id);
+          document.getElementById(id).src = this.answerRightItem.img;
+        }
+        setTimeout(() => {
+          this.changeArr();
+          this.isAnswerRight = null;
+        }, 2000);
+        //this.changeArr();
+      },
 
     },
     /* watch: {
@@ -202,6 +202,14 @@
     -moz-background-size: 100% 100%;
   }
 
+  .speed span {
+    position: absolute;
+    right: 8%;
+    top: 1%;
+    font-weight: bolder;
+    font-size: 30px;
+  }
+
   ul {
     position: absolute;
     top: 25%;
@@ -223,7 +231,7 @@
     /* background-image: url(../../assets/speed1/images/apple.jpg);
     background-repeat: no-repeat;
     background-size: 100% 100%; */
-    position:relative;
+    position: relative;
   }
 
   ul li img {
@@ -231,11 +239,12 @@
     width: 85%;
     vertical-align: middle;
   }
-  .statusImg{
-    width:60px;
-    height:60px;
-    position:absolute;
-    top:60%;
-    right:-15%;
+
+  .statusImg {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 60%;
+    right: -15%;
   }
 </style>
