@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
+    <audio src="" id="eventAudio"></audio>
     <router-view/>
   </div>
 </template>

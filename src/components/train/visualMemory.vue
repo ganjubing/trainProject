@@ -9,19 +9,30 @@
             <img v-for="(data,i) in sourceItem" :key="i" :src="data.img" @click="checkItem(data,index)">
           </div>
         </div>
-        <img class="errorImg" src="../../assets/visual2/error.png" v-show="(itemList[index].status&&!itemList[index].isItem)||(itemList[index].status&&(itemList[index].isItem&&itemList[index].isAnswerRight===false))" />
+        <img class="errorImg" src="../../assets/visual2/error.png" v-show="itemList[index].isShowIncorrectImg" />
+        <div class="itemImg">
+          <img style="width: 100%;height: 100%;" :src="item.img" v-show="(isShowMoment&&itemList[index].isItem)||(itemList[index].status&&itemList[index].isItem&&itemList[index].isAnswerRight===true)" />
+          <img v-show="itemList[index].isShowCorrectImg" src="../../assets/visual2/correct.png" style="width:60%;height: 60%;position: absolute;top:20%;left:22%;opacity:.8;">
+        </div>
 
-        <img class="itemImg" :src="item.img" v-show="(isShowMoment&&itemList[index].isItem)||(itemList[index].status&&itemList[index].isItem&&itemList[index].isAnswerRight===true)" />
       </div>
 
     </div>
     <img class="progress" :style="{width:surplusProglength+'%'}" src="../../assets/visual2/progranbar.png" />
-    <img class="readyImg" src="../../assets/visual2/ready.png"  v-if="isReady" />
+    <img class="readyImg" src="../../assets/visual2/ready.png" v-if="isReady" />
+    <div class="divResult" v-show="isFinish">
+      <span style="position: absolute;left: 19%;top: 42.5%;color: #357dd3;">{{totalCorrectNumber}}个</span>
+      <span style="position: absolute;left: 19%;top: 51%;color:#357dd3;">{{accuracy}}%</span>
+      <span style="position: absolute;left: 10%;top: 60%;color:#d7112f;font-size:50px;font-weight:900;">{{Math.round(totalCorrectNumber*10.5)}}</span>
+      <img style="position: absolute;left: 45%;bottom: 8%;width: 12.5%;height: 10%;" src="../../assets/visual2/btnContinu.png" @click="continu()" />
+    </div>
     <div class="tipInfo" v-if="isNextQuestion">
       <span v-html="nextTitle"></span>
     </div>
-    <img style="position:absolute;right:4%;top:10%;" src="../../assets/star.png" @click="timerStar" />
-    <img style="position:absolute;right:35%;top:5%;" src="../../assets/visual2/title.png" />
+    <img style="position:absolute;right:4%;top:10%;width: 12.5%;height: 10%;" src="../../assets/star.png" @click="timerStar" />
+    <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height: 10%;background-color: #808080;opacity:.7;border-radius:7px;position:absolute;right:4%;top:10%;z-index: 999;"></div>
+    <img style="position:absolute;right:38.5%;top:5%;" src="../../assets/visual2/title.png" />
+
   </div>
 </template>
 
@@ -44,8 +55,8 @@
           value: 2,
           img: require("../../assets/visual2/airplane.png")
         }],
-        totalDuration: 200, //计时器总时长
-        surplusTime: 200, //当前剩余时长
+        totalDuration: 20, //计时器总时长
+        surplusTime: 20, //当前剩余时长
         totalProgLength: 38.5, //进度条总长度
         surplusProglength: 38.5, //进度条总长度
         intervalProgress: null, //进度条计时器
@@ -59,27 +70,35 @@
         isShowMoment: false, //进度条没走完前可见，记题时间
         itemsCount: 24, //循环生成栅格个数
         itemList: [], //每项栅格数据项
-        level: [1, 2, 3], //数组个数为有效时间内的答题数，数组值为该次需要记住的选项个数
+        level: [5, 8, 10], //数组个数为有效时间内的答题数，数组值为该次需要记住的选项个数
         currentLevel: 0, //当前答题，即level数组的index
         isStart: false, //答题是否已经开始(进度条走完才算开始)
         correctNumber: 0, //本次答对次数
         inCorrectNumber: 0, //本次答错次数
+        isFinish: false, //本轮答题是否已全部结束
+        totalCorrectNumber:0,//总答对数
+        totalIncorrectNumber:0,//总错误数
       }
     },
     computed: {
       nextTitle: function() {
         return '下一组：<span style="color:red;">' + this.level[this.currentLevel] + '个</span>';
       },
+      accuracy:function(){
+       var sum= eval(this.level.join("+"));
+       return (this.totalCorrectNumber/sum).toFixed(2)*100;
+      }
     },
     mounted() {
       this.initData();
     },
     methods: {
       timerStar() {
-        this.surplusTime = this.totalDuration;
-        this.surplusProglength = this.totalProgLength;
-        this.itemList.map(n => n.status = false);
+
+        //this.itemList.map(n => n.status = false);
         this.isReady = true;
+        //this.initData();
+        this.loadData();
         setTimeout(() => {
           this.isReady = false;
           this.isShowMoment = true;
@@ -99,7 +118,7 @@
         setTimeout(() => {
           this.isNextQuestion = false;
           this.isShowMoment = true;
-          this.initData();
+          this.loadData();
           this.intervalPro();
         }, this.nextQuestionTime)
       },
@@ -123,44 +142,62 @@
           if (this.surplusTime > 0) {
             this.surplusTime = this.surplusTime - 1;
           } else {
-            clearInterval(this.intervalTime) //清除计时器
-            this.intervalTime = null; //设置为null
-            //this.intervalList = null;
-            this.surplusTime = this.totalDuration;
+            this.isFinish = true;
           }
         }, 1000)
       },
       selectResult(index) {
         if (!this.isStart) return;
         //this.itemList.map(n => n.status = false);
+        var itmeObj = this.itemList[index];
         this.itemList[index].status = true;
+        if (itmeObj.status && !itmeObj.isItem) {
+          this.playAudio(false);
+          this.showAnswerIncorrectImg(index);
+        }
+
       },
       checkItem(item, index) {
         var val = this.itemList[index].value;
         if (val == item.value) { //回答正确
+          this.playAudio(true);
           this.itemList[index].isAnswerRight = true;
           this.correctNumber += 1;
+          this.totalCorrectNumber+=1;
+          this.showAnswerCorrectImg(index);
           if (this.correctNumber == this.level[this.currentLevel]) { //如果题目全部答对，进入下一轮
             if (this.currentLevel < this.level.length - 1)
               this.nextQuestion();
             else {
-              this.doFinish();
-              alert('已完成所有答题');
+              //alert('已完成所有答题');
+              //this.doFinish();
+              this.isFinish = true;
             }
-
           }
         } else {
+          this.showAnswerIncorrectImg(index);
+          this.playAudio(false);
           this.itemList[index].isAnswerRight = false;
           this.inCorrectNumber += 1;
-          this.nextQuestion();
+          this.totalCorrectNumber+=1;
+          if (this.currentLevel < this.level.length - 1)
+            this.nextQuestion();
+          else {
+            //alert('已完成所有答题');
+            //this.doFinish();
+            this.isFinish = true;
+          }
         }
       },
-      initData() {
+      loadData() {
+        this.surplusTime = this.totalDuration;
+        this.surplusProglength = this.totalProgLength;
         var newData = [];
         var list = randomNumBoth(1, 25, this.level[this.currentLevel]);
         list.sort((a, b) => {
           return a - b;
         });
+        console.log(list);
         for (var i = 1; i <= this.itemsCount; i++) {
           var isHasItem = false;
           var val = -1;
@@ -178,6 +215,8 @@
               value: val, //答案项是马还是飞机
               isAnswerRight: null, //此题是否答题正确，默认null，
               img: val === 2 ? airplaneImg : horseImg, //选项图片
+              isShowCorrectImg: false, //是否已显示作答正确图片
+              isShowIncorrectImg: false, //是否已显示作答错误图片
             });
           } else {
             newData.push({
@@ -186,10 +225,26 @@
               value: -1,
               isAnswerRight: false,
               img: '',
+              isShowCorrectImg: false,
+              isShowIncorrectImg: false,
             });
           }
         }
         this.itemList = newData;
+      },
+      initData() {
+        this.itemList=[];
+        for (var i = 0; i < this.itemsCount; i++) {
+          this.itemList.push({
+            status: false,
+            isItem: false,
+            value: -1,
+            isAnswerRight: false,
+            img: '',
+            isShowCorrectImg: false,
+            isShowIncorrectImg: false,
+          })
+        }
       },
       doFinish() {
         this.currentLevel = 0;
@@ -200,8 +255,36 @@
         clearInterval(this.intervalProgress)
         this.intervalTime = null;
         this.intervalProgress = null;
+      },
+      showAnswerCorrectImg(index) {
+        this.itemList[index].isShowCorrectImg = true;
+        if (this.itemList[index].status && this.itemList[index].isItem && this.itemList[index].isAnswerRight === true) {
+          setTimeout(() => {
+            this.itemList[index].isShowCorrectImg = false;
+          }, 2000)
+        }
+      },
+      showAnswerIncorrectImg(index) {
+        this.itemList[index].isShowIncorrectImg = true;
+        if (this.itemList[index].status && (!this.itemList[index].isItem || this.itemList[index].isItem && this.itemList[
+            index].isAnswerRight === false)) {
+          setTimeout(() => {
+            this.itemList[index].isShowIncorrectImg = false;
+          }, 2000)
+        }
+      },
+      continu(){
+        this.surplusTime = this.totalDuration;
+        this.surplusProglength = this.totalProgLength;
+        this.isFinish=false;
+        this.totalCorrectNumber=0;
+        this.totalIncorrectNumber=0;
+        this.doFinish();
+        this.initData();
       }
-    }
+
+    },
+    watch: {}
   }
 </script>
 
@@ -226,38 +309,12 @@
     font-size: 30px;
   }
 
-  ul {
-    padding: 0px;
-    margin: 0px;
-    position: absolute;
-    top: 18%;
-    left: 27.5%;
-    width: 45%;
-  }
-
-  ul li {
-    list-style-type: none;
-    display: inline-block;
-    border: 1px dashed #808080;
-    width: 90px;
-    height: 90px;
-    text-align: center;
-    line-height: 90px;
-    border-radius: 25px;
-    margin: 0.2% 0.2%;
-    background-color: #FFFFFF;
-    background-image: url(../../assets/visual2/container.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-  }
-
   .container {
     width: 50%;
     height: 92%;
     position: absolute;
     left: 25%;
-    top: 21%;
+    top: 20.5%;
   }
 
   .container .list {
@@ -326,9 +383,9 @@
 
   .progress {
     position: absolute;
-    left: 34.5%;
-    bottom: 4.4%;
-    height: 2%;
+    left: 34.4%;
+    bottom: 4.2%;
+    height: 2.2%;
   }
 
   .tipInfo {
@@ -345,7 +402,7 @@
   }
 
   .tipInfo span {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
     position: absolute;
     top: 45%;
@@ -353,5 +410,17 @@
     width: 30%;
     height: 50px;
     line-height: 50px;
+  }
+  .divResult{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-image: url(../../assets/visual2/result.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: 9999;
   }
 </style>

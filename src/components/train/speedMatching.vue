@@ -1,9 +1,20 @@
 <template>
   <div class="speed">
-    <span>{{timeLength}}</span>
+    <span class="surplusTime">{{timeLength}}</span>
     <img style="position:absolute;right:4%;top:10%;" src="../../assets/star.png" @click="timerStar" />
-    <img src="../../assets/speed1/ready.png" style="width:320px;height:240px;position:absolute;top:35%;left:42%;" v-if="isReady" />
-    <ul v-else id="ulList">
+    <img src="../../assets/speed1/ready.png" style="width:320px;height:240px;position:absolute;top:35%;left:50%;" v-if="isReady" />
+
+    <div class="container" style="border: 1px solid #FF0000;position: absolute;left: 35%;top:30%;width: 30%;height: 40%;display:inline;">
+      <div style="background-color:#FFFFFF;border-radius: 10px;height: 37%;width:24%;position: relative;border: 1px solid #808080;">
+      </div>
+      <div style="background-color:#FFFFFF;border-radius: 10px;height: 37%;width:24%;position: relative;border: 1px solid #808080;">
+      </div>
+      <div style="background-color:#FFFFFF;border-radius: 10px;height: 37%;width:24%;position: relative;border: 1px solid #808080;">
+      </div>
+      <div style="background-color:#FFFFFF;border-radius: 10px;height: 37%;width:24%;position: relative;border: 1px solid #808080;">
+      </div>
+    </div>
+    <!-- <ul v-else id="ulList">
       <li @click="checkItem(items[0],0)" v-if="items.length>0"><img :src="items[0].img" :id="items[0].value" />
         <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[0].value" />
         <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[0].value" />
@@ -20,8 +31,8 @@
         <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[3].value" />
         <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[3].value" />
       </li>
-    </ul>
-    <span style="position: absolute;right:49%;bottom:8%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.name}}</span>
+    </ul> -->
+    <span style="position: absolute;right:48.5%;bottom:8%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.name}}</span>
   </div>
 </template>
 
@@ -185,24 +196,18 @@
 </script>
 
 <style scoped="scoped">
-  * {
-    margin: 0;
-    padding: 0;
-
-  }
-
   .speed {
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
     background-image: url(../../assets/speed1/bg.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-position: 0px -5px;
+    background-position:center;
     -moz-background-size: 100% 100%;
   }
 
-  .speed span {
+  .speed .surplusTime {
     position: absolute;
     right: 8%;
     top: 1%;
