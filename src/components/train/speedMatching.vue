@@ -1,38 +1,35 @@
 <template>
   <div class="speed">
-    <span class="surplusTime">{{timeLength}}</span>
-    <img style="position:absolute;right:4%;top:10%;" src="../../assets/star.png" @click="timerStar" />
-    <img src="../../assets/speed1/ready.png" style="width:320px;height:240px;position:absolute;top:35%;left:50%;" v-if="isReady" />
+    <span class="surplusTime">{{surplusTime}}</span>
+    <img style="position:absolute;right:4%;top:10%;width: 12.5%;height: 10%;" src="../../assets/star.png" @click="timerStar" />
+    <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height:10%;background-color: #808080;
+    opacity:.7;border-radius:7px;position:absolute;right:4%;top:10%;z-index: 999;"></div>
+    <img src="../../assets/speed1/ready.png" style="width:18.5%;height:32%;position:absolute;top:35%;left:41%;" v-if="isReady" />
 
-    <div class="container" style="border: 1px solid #FF0000;position: absolute;left: 35%;top:30%;width: 30%;height: 40%;display:inline;">
-      <div style="background-color:#FFFFFF;border-radius: 10px;height: 37%;width:24%;position: relative;border: 1px solid #808080;">
-      </div>
-      <div style="background-color:#FFFFFF;border-radius: 10px;height: 37%;width:24%;position: relative;border: 1px solid #808080;">
-      </div>
-      <div style="background-color:#FFFFFF;border-radius: 10px;height: 37%;width:24%;position: relative;border: 1px solid #808080;">
-      </div>
-      <div style="background-color:#FFFFFF;border-radius: 10px;height: 37%;width:24%;position: relative;border: 1px solid #808080;">
+    <div class="container">
+      <div class="list" @click="checkItem(item,index)" v-if="itemList.length>0" v-for="(item,index) in itemList" :key="index">
+        <div style="position: relative;width: 100%;height: 100%;left: 0%;top:0%;">
+          <img v-if="(!isWaiting&&item.checkStatus!=true)&&(!isWaiting&&item.checkStatus!=false&&item.value!=answerRightItem.value)||(!isWaiting&&item.checkStatus===null&&isAnswerRight===null)"
+            style="width:93%;height:93%;margin:3% 3%;" src="../../assets/speed1/unknow.png" />
+          <img v-if="isWaiting||item.checkStatus!=null||(answerRightItem.value===item.value&&isAnswerRight!=null)"
+            style="width:90%;height:90%;margin:3% 3%;border:1px dashed #808080;border-radius: 10px;" :src="item.img" />
+          <img v-if="item.checkStatus===true" style="width:90%;height:90%;position: absolute;left:42%;opacity:.8;top: 32%;"
+            src="../../assets/speed1/right.png" />
+          <img v-if="item.checkStatus===false" style="width:90%;height:90%;position: absolute;left: 42%;opacity:.8;top:32%;"
+            src="../../assets/speed1/error.png" />
+        </div>
+
       </div>
     </div>
-    <!-- <ul v-else id="ulList">
-      <li @click="checkItem(items[0],0)" v-if="items.length>0"><img :src="items[0].img" :id="items[0].value" />
-        <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[0].value" />
-        <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[0].value" />
-      </li>
-      <li @click="checkItem(items[1],1)" v-if="items.length>0"><img :src="items[1].img" :id="items[1].value" />
-        <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[1].value" />
-        <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[1].value" />
-      </li>
-      <li @click="checkItem(items[2],2)" v-if="items.length>0"><img :src="items[2].img" :id="items[2].value" />
-        <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[2].value" />
-        <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[2].value" />
-      </li>
-      <li @click="checkItem(items[3],3)" v-if="items.length>0"><img :src="items[3].img" :id="items[3].value" />
-        <img class="statusImg" src="../../assets/speed1/error.png" v-if="isAnswerRight==false&&selectedItem.value===items[3].value" />
-        <img class="statusImg" src="../../assets/speed1/right.png" v-if="isAnswerRight&&selectedItem.value===items[3].value" />
-      </li>
-    </ul> -->
-    <span style="position: absolute;right:48.5%;bottom:8%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.name}}</span>
+    <span style="position: absolute;right:48.5%;bottom:8%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.typeName}}</span>
+    <div class="divResult" v-show="isFinish">
+      <span style="position: absolute;left: 53%;top: 42.5%;color: #357dd3;font-size: 20px;font-weight: bolder;">{{spanTimeLength}}毫秒</span>
+      <span style="position: absolute;left: 53%;top: 53%;color:#357dd3;font-size: 20px;font-weight: bolder;">{{accuracy}}%</span>
+      <span style="position: absolute;left: 45%;top: 65%;color:#d7112f;font-size:50px;font-weight:900;">{{Math.round(correctNumber*10.5)}}</span>
+      <img style="position: absolute;left: 44%;bottom: 4%;width: 12.5%;height: 10%;" src="../../assets/visual2/btnContinu.png"
+        @click="continu()" />
+    </div>
+
   </div>
 </template>
 
@@ -41,28 +38,44 @@
     Timer,
     randonArr,
     randomLimit,
-    getRandomArr
+    getRandomArr,
+    spanTime
   } from '../../utils/common.js'
   import unkow from '../../assets/speed1/unknow.png'
   export default {
     name: 'SpeedMathching',
     data() {
       return {
-        timeLength: 140,
+        totalDuration: 120, //计时器总时长(秒)
+        surplusTime: 120, //当前剩余时长
+        isTimeout: false, //是否时间已到
+        isFinish: false, //是否答题结束
         intervalTime: null,
-        intervalList: null,
         isReady: false,
+        readyTime: 1000, //准备时长，即从显示准备开始图标到隐藏图标的时间（毫秒）
+        showCheckedTime: 1000, //答题后显示答题情况时长
+        nextQuestionTime: 1000, //隔多久进入下一题
+        memoryDuration: 2000, //题目记忆时长
+        surplusMemory: 2000, //当前题的记忆时长
+        minMemoryDuration: 200, //最低允许记忆时长
+        memoryStep: 100, //每答对一道题，记题时长减少数（毫秒）
+        beginTime: null, //本题的开始时间
+        endTime: null, //本题结束时间
+        spanTimeLength: 0, //答一道题所用时间（毫秒）
+        isWaiting: false,
         isAnswerRight: null,
+        totalAnswerNumber: 0, //总答题数
+        correctNumber: 0, //答对数量
         answerItem: {
-          name: '水果',
+          typeName: '水果',
           value: 1
         },
-        answerRightItem: {}, //正确项
-        selectedItem: {}, //用户选着项
+        answerRightItem: null, //正确项
+        selectedItem: null, //用户选着项
         rightItems: [{
           name: '苹果',
           img: require("../../assets/speed1/images/apple.jpg"),
-          value: 1
+          value: 1,
         }, {
           name: '香蕉',
           img: require("../../assets/speed1/images/banana.jpg"),
@@ -109,89 +122,110 @@
           img: require("../../assets/speed1/images/chili.jpg"),
           value: 7
         }, ],
-        items: [],
+        itemList: [],
       }
     },
-    mounted() {
-      //Timer(this.timeLength)
-      /* var arr=randonArr(this.items);
-      console.log(arr) */
-
+    computed: {
+      accuracy: function() {
+        return (this.correctNumber / this.totalAnswerNumber).toFixed(2) * 100;
+      }
     },
+    mounted() {},
     methods: {
       timerStar() {
-        this.changeArr();
-        if (this.intervalTime != null)
-          return;
+        this.intervalTimer();
+        this.readyGo();
+      },
+      intervalTimer() {
         // 计时器为空，操作
+        if (this.intervalTime != null) return;
         this.intervalTime = setInterval(() => {
-          if (this.timeLength > 0) {
-            this.timeLength = this.timeLength - 1;
+          if (this.surplusTime > 0) {
+            this.surplusTime = this.surplusTime - 1;
           } else {
-            clearInterval(this.intervalTime) //清除计时器
-
-            this.intervalTime = null; //设置为null
-            this.intervalList = null;
-            this.timeLength = 140;
+            this.isTimeout = true;
           }
         }, 1000)
       },
-      changeArr() {
-        let i = 0;
-        this.isReady = true;
-        setTimeout(() => {
-          this.isReady = false;
-        }, 1000);
+      loadData() {
         var otherArr = getRandomArr(this.otherItems, 3);
         var rightItem = getRandomArr(this.rightItems, 1);
         this.answerRightItem = rightItem[0];
-        this.items = [];
-        otherArr.map(n => this.items.push(n));
-        rightItem.map(n => this.items.push(n));
-        randonArr(this.items);
-        setTimeout(function() {
+        this.itemList = [];
+        otherArr.map(n => this.itemList.push(n));
+        rightItem.map(n => this.itemList.push(n));
+        this.itemList.map(m => m.checkStatus = null);
+        randonArr(this.itemList);
+      },
+      waitingSecond() {
+        this.isWaiting = true;
+        setTimeout(() => {
           //遮挡图片
-          var lis = document.querySelectorAll('#ulList>li>img');
-          for (var i = 0; i < lis.length; i++) {
-            lis[i].src = unkow;
-          }
-        }, 2000);
-
-        /* if (this.intervalList != null) return
-        this.intervalList = setInterval(() => {
-          var otherArr = getRandomArr(this.otherItems, 3);
-          var rightItem = getRandomArr(this.rightItems, 1);
-          this.items = [];
-          otherArr.map(n => this.items.push(n));
-          rightItem.map(n => this.items.push(n));
-          randonArr(this.items);
-        }, 2000);*/
+          this.isWaiting = false;
+          this.beginTime = new Date(); //答题开始计时
+        }, this.surplusMemory);
       },
       checkItem(obj, index) {
+        if (this.isWaiting||obj.checkStatus!=null) return;
+        this.totalAnswerNumber += 1; //答题数自增1
+        var state = this.answerItem.value === obj.value;
         this.selectedItem = obj;
-        var lis = document.querySelectorAll('#ulList>li>img');
-        lis[index].src = obj.img;
-        if (this.answerItem.value === obj.value) {
+        this.playAudio(state)
+        if (state) {
+          this.surplusMemory = this.surplusMemory > this.minMemoryDuration ? this.surplusMemory - this.memoryStep :
+            this.surplusMemory;
+          this.correctNumber += 1;
+          this.endTime = new Date();
+          obj.checkStatus = true;
           this.isAnswerRight = true;
+          var duration = this.endTime.getTime() - this.beginTime.getTime();
+          if (this.spanTimeLength <= 0 || duration < this.spanTimeLength) {
+            this.spanTimeLength = duration;
+          }
         } else {
           this.isAnswerRight = false;
-          var id = this.answerRightItem.value;
-          console.log(id);
-          document.getElementById(id).src = this.answerRightItem.img;
+          obj.checkStatus = false;
         }
-        setTimeout(() => {
-          this.changeArr();
-          this.isAnswerRight = null;
-        }, 2000);
-        //this.changeArr();
-      },
 
-    },
-    /* watch: {
-      'timeLength': function(newval) {
-        console.log(newval);
+        setTimeout(() => {
+          this.nextQuestion();
+        }, this.showCheckedTime)
+
+      },
+      nextQuestion() {
+        this.itemList = [];
+        setTimeout(() => {
+          this.isAnswerRight = null;
+          if (this.isTimeout)
+            this.doFinish();
+          else
+            this.readyGo();
+        }, this.nextQuestionTime)
+
+      },
+      readyGo() {
+        this.isReady = true;
+        setTimeout(() => {
+          this.isReady = false;
+          this.loadData();
+          this.waitingSecond();
+        }, this.readyTime);
+      },
+      doFinish() {
+        this.isFinish = true;
+        clearInterval(this.intervalTime);
+        this.intervalTime = null;
+      },
+      continu() {
+        this.surplusTime = this.totalDuration;
+        this.surplusMemory = this.memoryDuration;
+        this.totalAnswerNumber = 0;
+        this.correctNumber = 0;
+        this.isFinish = false;
+        this.isTimeout=false;
       }
-    } */
+    },
+    watch: {}
   }
 </script>
 
@@ -199,11 +233,11 @@
   .speed {
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     background-image: url(../../assets/speed1/bg.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-position:center;
+    background-position: center;
     -moz-background-size: 100% 100%;
   }
 
@@ -215,34 +249,22 @@
     font-size: 30px;
   }
 
-  ul {
+  .container {
     position: absolute;
-    top: 25%;
-    left: 32%;
-    width: 35%;
+    left: 35%;
+    top: 29.5%;
+    width: 30%;
+    height: 40%;
   }
 
-  ul li {
-    list-style-type: none;
+  .container .list {
+    width: 24%;
+    height: 40.8%;
     display: inline-block;
-    border: 1px dashed #808080;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    line-height: 100px;
-    border-radius: 25px;
-    margin: 10% 15%;
+    margin: 2.5% 10% 5% 10%;
+    border-radius: 15px;
     background-color: #FFFFFF;
-    /* background-image: url(../../assets/speed1/images/apple.jpg);
-    background-repeat: no-repeat;
-    background-size: 100% 100%; */
-    position: relative;
-  }
-
-  ul li img {
-    heigth: 85%;
-    width: 85%;
-    vertical-align: middle;
+    border-radius: 10px;
   }
 
   .statusImg {
@@ -251,5 +273,18 @@
     position: absolute;
     top: 60%;
     right: -15%;
+  }
+
+  .divResult {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-image: url(../../assets/speed1/result.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center, center;
+    z-index: 9999;
   }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <ul v-for="(itme,key) in list" :key="key">
+    <ul v-for="(itme,key) in $router.options.routes" :key="key">
       <li>
-        <router-link :to="itme.url">{{itme.title}}</router-link>
+        <router-link :to="itme.path">{{itme.meta.title}}</router-link>
       </li>
     </ul>
   </div>

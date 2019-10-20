@@ -55,8 +55,8 @@
           value: 2,
           img: require("../../assets/visual2/airplane.png")
         }],
-        totalDuration: 20, //计时器总时长
-        surplusTime: 20, //当前剩余时长
+        totalDuration: 200, //计时器总时长
+        surplusTime: 200, //当前剩余时长
         totalProgLength: 38.5, //进度条总长度
         surplusProglength: 38.5, //进度条总长度
         intervalProgress: null, //进度条计时器
@@ -197,7 +197,6 @@
         list.sort((a, b) => {
           return a - b;
         });
-        console.log(list);
         for (var i = 1; i <= this.itemsCount; i++) {
           var isHasItem = false;
           var val = -1;
@@ -420,7 +419,7 @@
     background-image: url(../../assets/visual2/result.png);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center,center;
     z-index: 9999;
   }
 </style>
