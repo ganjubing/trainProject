@@ -21,7 +21,7 @@
 
       </div>
     </div>
-    <span style="position: absolute;right:48.5%;bottom:8%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.typeName}}</span>
+    <span style="position: absolute;right:48%;bottom:5%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.typeName}}</span>
     <div class="divResult" v-show="isFinish">
       <span style="position: absolute;left: 53%;top: 42.5%;color: #357dd3;font-size: 20px;font-weight: bolder;">{{spanTimeLength}}毫秒</span>
       <span style="position: absolute;left: 53%;top: 53%;color:#357dd3;font-size: 20px;font-weight: bolder;">{{accuracy}}%</span>
@@ -46,8 +46,8 @@
     name: 'SpeedMathching',
     data() {
       return {
-        totalDuration: 120, //计时器总时长(秒)
-        surplusTime: 120, //当前剩余时长
+        totalDuration: 200, //计时器总时长(秒)
+        surplusTime: 200, //当前剩余时长
         isTimeout: false, //是否时间已到
         isFinish: false, //是否答题结束
         intervalTime: null,

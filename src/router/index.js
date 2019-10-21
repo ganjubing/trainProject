@@ -15,7 +15,7 @@ export default new Router({
       name:'Index',
       component:Index,
       meta:{
-        title:'aa'
+        title:'首页'
       }
     },
     {

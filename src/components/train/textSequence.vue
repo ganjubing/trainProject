@@ -63,8 +63,8 @@
   export default {
     data() {
       return {
-        totalDuration: 10, //计时器总时长(秒)
-        surplusTime: 10, //当前剩余时长
+        totalDuration: 200, //计时器总时长(秒)
+        surplusTime: 200, //当前剩余时长
         isTimeout: false, //是否时间已到
         isFinish: false, //是否答题结束
         isRestart: false, //是否重新开始
