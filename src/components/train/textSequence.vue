@@ -1,9 +1,9 @@
 <template>
   <div class="sequence">
     <span class="surplusTime">{{surplusTime}}</span>
-    <img style="position:absolute;right:4%;top:10%;width: 12.5%;height: 10%;" src="../../assets/star.png" @click="timerStar" />
+    <img style="position:absolute;right:20%;top:0%;width: 12.5%;height: 10%;" src="../../assets/star.png" @click="timerStar" />
     <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height:10%;background-color: #808080;
-    opacity:.7;border-radius:7px;position:absolute;right:4%;top:10%;z-index: 999;"></div>
+    opacity:.7;border-radius:7px;position:absolute;right:20%;top:0%;z-index: 999;"></div>
     <div v-show="isShowTipInfo">
       <img src="../../assets/text/tipInfo.png" style="width: 100%;height: 100%;z-index: 9999;position: absolute;left: 0;top:0;" />
       <div style="position: absolute;width: 30%;height: 10%;left: 25%;top:50%;z-index: 9999;">
@@ -18,7 +18,7 @@
       <img @click="start" src="../../assets/text/btnBegin.png" style="width:9%;height: 17%;position: absolute;top:47%;right:28%;z-index: 9999;" />
     </div>
     <div class="lefDiv">
-      <div :style="{visibility:option.selected?'hidden':'visible'}" @click="selectItem(option,index)" v-for="(option,index) in randomArray"
+      <div v-if="isStart" :style="{visibility:option.selected?'hidden':'visible'}" @click="selectItem(option,index)" v-for="(option,index) in randomArray"
         :key="index">
         <span>{{option.text}}</span>
       </div>
@@ -34,7 +34,7 @@
           <img v-if="arr.showCorrectImg" src="../../assets/correct.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
           <img v-if="arr.showIncorrectImg" src="../../assets/incorrect.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
         </div>
-        <img v-if="arr.num===currentNumber" src="../../assets/text/overUnderLine.png" style="height:3%;width: 100%;" />
+        <img v-if="arr.num===currentNumber&&isStart" src="../../assets/text/overUnderLine.png" style="height:3%;width: 100%;" />
         <img v-else src="../../assets/text/underLine.png" style="height:3%;width: 100%;" />
       </div>
     </div>
@@ -42,6 +42,13 @@
       <img src="../../assets/text/restartip.png" style="height:100%;width: 100%;position: absolute;left:0;top:0;z-index: 9999;" />
       <span style="color: #fb7b06;font-size: 25px;font-weight: bolder;position: relative;top:38%;left: 5%;z-index: 9999;">错误过多！请重新开始！</span><br />
       <img @click="restart()" src="../../assets/text/btnRestart.png" style="width:10%;height: 10%;position: relative;top:43%;left:4.5%;z-index: 9999;" />
+    </div>
+    <div class="divResult" v-show="isFinish">
+      <span style="position: absolute;left: 53%;top: 38%;color: #357dd3;font-size: 40px;font-weight: bolder;">{{totalAnswerNumber}}</span>
+      <span style="position: absolute;left: 53%;top: 45%;color:#357dd3;font-size: 40px;font-weight: bolder;">{{accuracy}}%</span>
+      <span style="position: absolute;left: 45%;top: 55%;color:#d7112f;font-size:50px;font-weight:900;">{{Math.round(correctNumber*10.5)}}</span>
+      <img style="position: absolute;left: 44%;bottom:10%;width: 12.5%;height: 10%;" src="../../assets/visual2/btnContinu.png"
+        @click="continu()" />
     </div>
   </div>
 </template>
@@ -56,8 +63,8 @@
   export default {
     data() {
       return {
-        totalDuration: 120, //计时器总时长(秒)
-        surplusTime: 120, //当前剩余时长
+        totalDuration: 10, //计时器总时长(秒)
+        surplusTime: 10, //当前剩余时长
         isTimeout: false, //是否时间已到
         isFinish: false, //是否答题结束
         isRestart: false, //是否重新开始
@@ -80,10 +87,16 @@
           text: '四',
           selected: false
         }],
+        isStart:false,//是否已开始
         isShowTipInfo: false,
         subjectNumber: 6, //小题数
         selectArry: [],
         currentNumber: 0, //一题分为6小题，当前第几小题
+      }
+    },
+    computed:{
+      accuracy:function(){
+       return (this.correctNumber/this.totalAnswerNumber).toFixed(2)*100;
       }
     },
     mounted() {
@@ -91,6 +104,7 @@
     },
     methods: {
       timerStar() {
+        this.isStart=true;
         this.isShowTipInfo = true;
         this.intervalTimer();
       },
@@ -100,6 +114,7 @@
         this.randomArray.map(m => m.selected = false);
       },
       selectItem(item, index) {
+        //if(!this.isStart)return;
         this.totalAnswerNumber += 1;
         var currentItem = this.selectArry[this.currentNumber];
         if (currentItem.data.length < 4) {
@@ -110,31 +125,39 @@
           item.selected = true;
           if (currentItem.data.length == 4) {
             if (this.ruleItem.text === currentItem.data[this.ruleItem.index - 1].text && !this.isHasSameArray(this.selectArry)) { //符合规则
+            this.correctNumber+=1;
               currentItem.status = true,
                 this.showCorrectImgMoment(currentItem);
               this.playAudio(true)
-              var listStatus = this.selectArry.map(m => m.status);
-              var correct = this.getSameNum(true, listStatus);
-              if (correct === this.subjectNumber) { //本次6小题全答对，进入下一轮
-                this.initData();
-                this.isShowTipInfo = true;
-              } else {
-                this.currentNumber += 1;
-                this.randomArray.map(m => m.selected = false);
+              if(!this.isTimeout){
+                var listStatus = this.selectArry.map(m => m.status);
+                var correct = this.getSameNum(true, listStatus);
+                if (correct === this.subjectNumber) { //本次6小题全答对，进入下一轮
+                  this.initData();
+                  this.isShowTipInfo = true;
+                } else {
+                  this.currentNumber += 1;
+                  this.randomArray.map(m => m.selected = false);
+                }
+              }else{
+                this.doFinish();
               }
+
             } else {
-              correctNumber
               this.playAudio(false);
               this.showInCorrectImgMoment(currentItem);
               currentItem.status = false;
-              if (this.errorNumber >= this.maxErrorNumber) {
-                this.isRestart = true;
-              } else {
-                this.errorNumber += 1;
-                currentItem.data = [];
-                this.randomArray.map(m => m.selected = false);
+              if(!this.isTimeout){
+                if (this.errorNumber >= this.maxErrorNumber) {
+                  this.isRestart = true;
+                } else {
+                  this.errorNumber += 1;
+                  currentItem.data = [];
+                  this.randomArray.map(m => m.selected = false);
+                }
+              }else{
+                this.doFinish()
               }
-
             }
 
           }
@@ -217,6 +240,21 @@
           return value == val;
         })
         return processArr.length;
+      },
+      doFinish(){
+        this.isStart=false;
+        this.isFinish = true;
+        clearInterval(this.intervalTime);
+        this.intervalTime = null;
+      },
+      continu(){
+        this.errorNumber = 0;
+        this.surplusTime = this.totalDuration;
+        this.totalAnswerNumber = 0;
+        this.correctNumber = 0;
+        this.isFinish = false;
+        this.isTimeout=false;
+        this.initData();
       }
     }
   }
@@ -286,5 +324,17 @@
     vertical-align: middle;
     font-size: 30px;
     font-weight: bold;
+  }
+  .divResult{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-image: url(../../assets/text/result.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center,center;
+    z-index: 9999;
   }
 </style>
