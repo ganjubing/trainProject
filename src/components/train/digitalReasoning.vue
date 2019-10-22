@@ -1,9 +1,42 @@
 <template>
   <div class="digital">
     <!-- <span class="surplusTime">{{surplusTime}}</span> -->
-    <img style="position:absolute;right:20%;top:0%;width: 12.5%;height: 10%;" src="../../assets/star.png"  />
+    <!-- <img style="position:absolute;right:20%;top:0%;width: 12.5%;height: 10%;" src="../../assets/star.png" /> -->
     <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height:10%;background-color: #808080;
     opacity:.7;border-radius:7px;position:absolute;right:20%;top:0%;z-index: 999;"></div>
+    <ul style="margin:0px;padding: 0px;position: absolute;top:32%;left:17%;width: 60%;">
+      <li v-for="(item,index) in itemArray" :key="index"
+       style="list-style-type: none;display: inline-block;font-size:50px;color: white;font-weight: bold;width: 20%;margin-left:0%;float:left;">
+        {{index==questionIndex?'？':item}}
+        </li>
+
+    </ul>
+    <ul style="margin:0px;padding: 0px;border: 1px solid #00FF00;position: absolute;bottom:20%;left:17%;width: 60%;">
+      <li style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;border: 1px solid #0000FF;margin:0% 3%;">
+        <div style="position:relative; display: table-cell;vertical-align:middle;text-align:center">
+          <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
+          <span style="position: absolute;left:30%;top:10%;z-index: 9999;">35</span>
+        </div>
+      </li>
+      <li style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;border: 1px solid #0000FF;margin:0% 3%;">
+        <div style="position:relative;display: table-cell;vertical-align:middle;text-align:center">
+          <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
+          <span style="position: absolute;left:30%;top:10%;">55</span>
+        </div>
+      </li>
+      <li style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;border: 1px solid #0000FF;margin:0% 3%;">
+        <div style="position:relative;display: table-cell;vertical-align:middle;text-align:center">
+          <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
+          <span style="position: absolute;left:30%;top:10%;;">45</span>
+        </div>
+      </li>
+      <li style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;border: 1px solid #0000FF;margin:0% 3%;">
+        <div style="position: relative;display: table-cell;vertical-align:middle;text-align:center">
+          <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
+          <span style="position: absolute;left:30%;top:10%;">65</span>
+        </div>
+      </li>
+    </ul>
     <!-- <div v-show="isShowTipInfo">
       <img src="../../assets/text/tipInfo.png" style="width: 100%;height: 100%;z-index: 9999;position: absolute;left: 0;top:0;" />
       <div style="position: absolute;width: 30%;height: 10%;left: 25%;top:50%;z-index: 9999;">
@@ -18,10 +51,10 @@
       <img @click="start" src="../../assets/text/btnBegin.png" style="width:9%;height: 17%;position: absolute;top:47%;right:28%;z-index: 9999;" />
     </div> -->
     <div class="rightDiv">
-      <img class="progress" :style="{height:surplusProglength+'%',marginTop:topHight*2+'%'}" src="../../assets/digital4/progranbar.png" />
+      <img class="progress" ref="imgPro" :style="{height:surplusProglength+'%',marginTop:topHeight+'px'}" src="../../assets/digital4/progranbar.png" />
     </div>
     <div class="container">
-      <div class="list" v-for="(arr,index) in selectArry">
+      <!-- <div class="list" v-for="(arr,index) in selectArry">
         <div style="font-size:0;height: 100%;width: 100%;">
           <div v-for="(item,i) in arr.data" style="float:left;height:99%;width:24%;border:1px solid #dad9da;display: inline-block;font-size: 14px;">
             <div style="display: table;text-align: center;width: 100%;height: 100%;">
@@ -33,9 +66,9 @@
         </div>
         <img v-if="arr.num===currentNumber&&isStart" src="../../assets/text/overUnderLine.png" style="height:3%;width: 100%;" />
         <img v-else src="../../assets/text/underLine.png" style="height:3%;width: 100%;" />
-      </div>
+      </div> -->
     </div>
-<!--    <div v-show="isRestart" style="position: absolute;left: 0;top:0;width: 100%;height: 100%;">
+    <!--    <div v-show="isRestart" style="position: absolute;left: 0;top:0;width: 100%;height: 100%;">
       <img src="../../assets/text/restartip.png" style="height:100%;width: 100%;position: absolute;left:0;top:0;z-index: 9999;" />
       <span style="color: #fb7b06;font-size: 25px;font-weight: bolder;position: relative;top:38%;left: 5%;z-index: 9999;">错误过多！请重新开始！</span><br />
       <img @click="restart()" src="../../assets/text/btnRestart.png" style="width:10%;height: 10%;position: relative;top:43%;left:4.5%;z-index: 9999;" />
@@ -65,31 +98,39 @@
         surplusTime: 200, //当前剩余时长
         isTimeout: false, //是否时间已到
         isFinish: false, //是否答题结束
-        surplusProglength:100,
+        surplusProglength: 100,
         progressSpan: 1000, //进度条多久减一次（毫秒）
-        progressStep:0.001,
-        intervalProgress:null,
-        topHight:0,
-        bottomM:0,
+        progressStep: 5,
+        intervalProgress: null,
+        topHeight: 0,
+        arrayLength:5,
+        itemArray:[],
+        questionIndex:0,
+        selectArry:[[23,25,28,32,37],[48,45,41,36,30],[20,21,23,26,30],[3,6,10,15,21],[7,14,21,28,35],[12,17,23,30,38]],
       }
     },
     mounted() {
       this.intervalPro();
+      this.initData();
     },
-    methods:{
+    methods: {
       intervalPro() {
         if (this.intervalProgress != null) return
         this.intervalProgress = setInterval(() => {
-          if (this.surplusProglength > 0) {
-            var span = this.surplusProglength - this.progressStep;
-            this.surplusProglength = span < 0 ? 0 : span;
-            this.topHight+=this.progressStep;
-            
+          if (this.totalProgLength > this.topHeight) {
+            /* var span = this.surplusProglength - this.progressStep;
+            this.surplusProglength = span < 0 ? 0 : span; */
+            this.topHeight = this.topHeight + this.progressStep;
           } else {
             clearInterval(this.intervalProgress);
             this.intervalProgress = null;
           }
         }, this.progressSpan);
+      },
+      initData(){
+        this.itemArray=getRandomArr(this.selectArry,1)[0];
+        console.log(this.itemArray)
+        this.questionIndex=randomNumBoth(0,this.arrayLength-1,1);
       },
     }
   }
@@ -144,7 +185,8 @@
     overflow: hidden;
     /* margin: 0.5% 2%; */
   }
-  .rightDiv img{
+
+  .rightDiv img {
     width: 25%;
     position: relative;
     bottom: 0;
@@ -167,7 +209,8 @@
     font-size: 30px;
     font-weight: bold;
   }
-  .divResult{
+
+  .divResult {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -176,7 +219,7 @@
     background-image: url(../../assets/digital4/result.png);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center,center;
+    background-position: center, center;
     z-index: 9999;
   }
 </style>
