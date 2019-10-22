@@ -6,20 +6,21 @@ import SpeedMathching from '@/components/train/speedMatching'
 import VisualMemory from '@/components/train/visualMemory'
 import TrainIndex from '@/components/train/trainIndex'
 import TextSequence from '@/components/train/textSequence'
+import DigitalReasoning from '@/components/train/digitalReasoning'
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
+    /* {
       path:'/',
       name:'Index',
       component:Index,
       meta:{
         title:'首页'
       }
-    },
+    }, */
     {
-      path:'/train',
+      path:'/',
       name:'TrainIndex',
       component:TrainIndex,
       meta:{
@@ -48,6 +49,14 @@ export default new Router({
       component:TextSequence,
       meta:{
         title:'03、文字序列'
+      }
+    },
+    {
+      path:'/train/digitalReasoning',
+      name:'DigitalReasoning',
+      component:DigitalReasoning,
+      meta:{
+        title:'04、数字推理'
       }
     },
   ]

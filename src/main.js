@@ -4,13 +4,16 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueRouter from 'vue-router';
-import ViewUI from 'view-design';
-import 'view-design/dist/styles/iview.css';
+import iView from 'iview'
+import 'iview/dist/styles/iview.css';
+
 import Crrect from './assets/audio/Correct.wav'
 import Incorrect from './assets/audio/Incorrect.wav'
 
 Vue.use(VueRouter);
-Vue.use(ViewUI);
+Vue.use(iView, {
+  i18n: (key, value) => i18n.t(key, value)
+})
 Vue.config.productionTip = false
 
 Vue.prototype.playAudio = (flag) => {
