@@ -110,6 +110,8 @@
       }
     },
     mounted() {
+      this.totalProgLength=this.$refs.imgPro.offsetHeight;
+      console.log(this.$refs.imgPro)
       this.intervalPro();
       this.initData();
     },
@@ -121,6 +123,7 @@
             /* var span = this.surplusProglength - this.progressStep;
             this.surplusProglength = span < 0 ? 0 : span; */
             this.topHeight = this.topHeight + this.progressStep;
+            console.log(this.$refs.imgPro)
           } else {
             clearInterval(this.intervalProgress);
             this.intervalProgress = null;
@@ -128,8 +131,8 @@
         }, this.progressSpan);
       },
       initData(){
+
         this.itemArray=getRandomArr(this.selectArry,1)[0];
-        console.log(this.itemArray)
         this.questionIndex=randomNumBoth(0,this.arrayLength-1,1);
       },
     }
