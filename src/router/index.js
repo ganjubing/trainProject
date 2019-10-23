@@ -7,6 +7,9 @@ import VisualMemory from '@/components/train/visualMemory'
 import TrainIndex from '@/components/train/trainIndex'
 import TextSequence from '@/components/train/textSequence'
 import DigitalReasoning from '@/components/train/digitalReasoning'
+import StroopIndex from '@/components/train/stroop/index'
+import Caption from '@/components/train/stroop/caption'
+
 Vue.use(Router)
 
 export default new Router({
@@ -20,43 +23,62 @@ export default new Router({
       }
     }, */
     {
-      path:'/',
-      name:'TrainIndex',
-      component:TrainIndex,
-      meta:{
-        title:'认知训练列表'
+      path: '/',
+      name: 'TrainIndex',
+      component: TrainIndex,
+      meta: {
+        title: '认知训练列表'
       }
     },
     {
-        path:'/train/speedMatching',
-        name:'SpeedMathching',
-        component:SpeedMathching,
-        meta:{
-          title:'01、速度速配'
-        }
+      path: '/train/speedMatching',
+      name: 'SpeedMathching',
+      component: SpeedMathching,
+      meta: {
+        title: '01、速度速配'
+      }
+    },
+    {
+      path: '/train/visualMemory',
+      name: 'VisualMemory',
+      component: VisualMemory,
+      meta: {
+        title: '02、双重视觉记忆'
+      }
+    },
+    {
+      path: '/train/textSequence',
+      name: 'TextSequence',
+      component: TextSequence,
+      meta: {
+        title: '03、文字序列'
+      }
+    },
+    {
+      path: '/train/digitalReasoning',
+      name: 'DigitalReasoning',
+      component: DigitalReasoning,
+      meta: {
+        title: '04、数字推理'
+      }
+    },
+    {
+      path: '/train/stroop',
+      name: 'StroopIndex',
+      component: StroopIndex,
+      meta: {
+        title: '18、颜色Stroop'
       },
-    {
-      path:'/train/visualMemory',
-      name:'VisualMemory',
-      component:VisualMemory,
-      meta:{
-        title:'02、双重视觉记忆'
-      }
+      children: [
+
+      ]
     },
     {
-      path:'/train/textSequence',
-      name:'TextSequence',
-      component:TextSequence,
-      meta:{
-        title:'03、文字序列'
-      }
-    },
-    {
-      path:'/train/digitalReasoning',
-      name:'DigitalReasoning',
-      component:DigitalReasoning,
-      meta:{
-        title:'04、数字推理'
+      path: '/train/stroop/caption',
+      name: 'Caption',
+      component: Caption,
+      meta: {
+        title: '说明'
       }
     },
   ]
