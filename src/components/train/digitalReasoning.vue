@@ -4,81 +4,44 @@
     <!-- <img style="position:absolute;right:20%;top:0%;width: 12.5%;height: 10%;" src="../../assets/star.png" /> -->
     <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height:10%;background-color: #808080;
     opacity:.7;border-radius:7px;position:absolute;right:20%;top:0%;z-index: 999;"></div>
-    <ul style="margin:0px;padding: 0px;position: absolute;top:32%;left:17%;width: 60%;">
-      <li v-for="(item,index) in itemArray" :key="index"
-       style="list-style-type: none;display: inline-block;font-size:50px;color: white;font-weight: bold;width: 20%;margin-left:0%;float:left;">
-        {{index==questionIndex?'？':item}}
-        </li>
+    <ul style="margin:0px;padding: 0px;position: absolute;top:35%;left:17%;width: 60%;">
+      <li v-for="(item,index) in itemArray.title" :key="index" style="list-style-type: none;display: inline-block;font-size:50px;color: white;font-weight: bold;width: 20%;margin-left:0%;float:left;">
+        {{item}}
+      </li>
 
     </ul>
-    <ul style="margin:0px;padding: 0px;border: 1px solid #00FF00;position: absolute;bottom:20%;left:17%;width: 60%;">
-      <li style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;border: 1px solid #0000FF;margin:0% 3%;">
+    <ul style="margin:0px;padding: 0px;position: absolute;bottom:25%;left:17%;width: 60%;">
+      <li v-for="(number,index) in itemArray.option" :key="index" style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;margin:0% 3%;">
         <div style="position:relative; display: table-cell;vertical-align:middle;text-align:center">
-          <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
-          <span style="position: absolute;left:30%;top:10%;z-index: 9999;">35</span>
-        </div>
-      </li>
-      <li style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;border: 1px solid #0000FF;margin:0% 3%;">
-        <div style="position:relative;display: table-cell;vertical-align:middle;text-align:center">
-          <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
-          <span style="position: absolute;left:30%;top:10%;">55</span>
-        </div>
-      </li>
-      <li style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;border: 1px solid #0000FF;margin:0% 3%;">
-        <div style="position:relative;display: table-cell;vertical-align:middle;text-align:center">
-          <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
-          <span style="position: absolute;left:30%;top:10%;;">45</span>
-        </div>
-      </li>
-      <li style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;border: 1px solid #0000FF;margin:0% 3%;">
-        <div style="position: relative;display: table-cell;vertical-align:middle;text-align:center">
-          <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
-          <span style="position: absolute;left:30%;top:10%;">65</span>
+          <div v-if="selectedIndex==index">
+            <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
+            <div v-if="isCorrect===true">
+              <img style="width: 70%;height: 100%;vertical-align: middle;position:absolute;left:15%;top:0;" src="../../assets/digital4/correctBlock.png" />
+              <img src="../../assets/correct.png" style="width:60%;height:80%;position: absolute;top:35%;left:50%;opacity:.8;" />
+            </div>
+            <div v-if="isCorrect===false">
+              <img style="width: 70%;height: 100%;vertical-align: middle;z-index:9999;position:absolute;left:15%;top:0;" src="../../assets/digital4/incorrectBlock.png" />
+              <img src="../../assets/incorrect.png" style="width:60%;height:80%;position: absolute;top:35%;left:50%;opacity:.8;" />
+            </div>
+            <span style="position: absolute;left:30%;top:20%;z-index: 9999;color:white;">{{number}}</span>
+          </div>
+          <div v-if="selectedIndex!=index" @click="checkItem(itemArray.answerItem,number,index)">
+            <img  style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
+            <span style="position: absolute;left:30%;top:20%;z-index: 9999;">{{number}}</span>
+          </div>
         </div>
       </li>
     </ul>
-    <!-- <div v-show="isShowTipInfo">
-      <img src="../../assets/text/tipInfo.png" style="width: 100%;height: 100%;z-index: 9999;position: absolute;left: 0;top:0;" />
-      <div style="position: absolute;width: 30%;height: 10%;left: 25%;top:50%;z-index: 9999;">
-        <div style="height:100%;width: 60%;float: left;display: table;">
-          <span style="font-size: 20px;font-weight: bolder;display: table-cell;vertical-align: middle;">本次练习第{{ruleItem.index}}个位置固定为</span></div>
-        <div style="float: left;height:100%;width:15%;border:1px solid #dad9da;font-size: 14px;">
-          <div style="display: table;text-align: center;width: 100%;height: 100%;">
-            <span style="display:table-cell;vertical-align: middle;font-size:25px;font-weight: bold;">{{ruleItem.text}}</span>
-          </div>
-        </div>
-      </div>
-      <img @click="start" src="../../assets/text/btnBegin.png" style="width:9%;height: 17%;position: absolute;top:47%;right:28%;z-index: 9999;" />
-    </div> -->
     <div class="rightDiv">
       <img class="progress" ref="imgPro" :style="{height:surplusProglength+'%',marginTop:topHeight+'px'}" src="../../assets/digital4/progranbar.png" />
     </div>
-    <div class="container">
-      <!-- <div class="list" v-for="(arr,index) in selectArry">
-        <div style="font-size:0;height: 100%;width: 100%;">
-          <div v-for="(item,i) in arr.data" style="float:left;height:99%;width:24%;border:1px solid #dad9da;display: inline-block;font-size: 14px;">
-            <div style="display: table;text-align: center;width: 100%;height: 100%;">
-              <span style="display:table-cell;vertical-align: middle;font-size:25px;font-weight: bold;">{{item.text}}</span>
-            </div>
-          </div>
-          <img v-if="arr.showCorrectImg" src="../../assets/correct.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
-          <img v-if="arr.showIncorrectImg" src="../../assets/incorrect.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
-        </div>
-        <img v-if="arr.num===currentNumber&&isStart" src="../../assets/text/overUnderLine.png" style="height:3%;width: 100%;" />
-        <img v-else src="../../assets/text/underLine.png" style="height:3%;width: 100%;" />
-      </div> -->
-    </div>
-    <!--    <div v-show="isRestart" style="position: absolute;left: 0;top:0;width: 100%;height: 100%;">
-      <img src="../../assets/text/restartip.png" style="height:100%;width: 100%;position: absolute;left:0;top:0;z-index: 9999;" />
-      <span style="color: #fb7b06;font-size: 25px;font-weight: bolder;position: relative;top:38%;left: 5%;z-index: 9999;">错误过多！请重新开始！</span><br />
-      <img @click="restart()" src="../../assets/text/btnRestart.png" style="width:10%;height: 10%;position: relative;top:43%;left:4.5%;z-index: 9999;" />
-    </div> -->
     <div class="divResult" v-show="isFinish">
-      <span style="position: absolute;left: 53%;top: 38%;color: #357dd3;font-size: 40px;font-weight: bolder;"></span>
-      <span style="position: absolute;left: 53%;top: 45%;color:#357dd3;font-size: 40px;font-weight: bolder;"></span>
-      <span style="position: absolute;left: 45%;top: 55%;color:#d7112f;font-size:50px;font-weight:900;"></span>
-      <img style="position: absolute;left: 44%;bottom:10%;width: 12.5%;height: 10%;" src="../../assets/visual2/btnContinu.png"
-        @click="continu()" />
+      <span style="position: absolute;left: 50%;top: 40%;color: #357dd3;font-size: 40px;font-weight: bolder;">{{correctNumber}}</span>
+      <span style="position: absolute;left: 50%;top: 46%;color:#357dd3;font-size: 40px;font-weight: bolder;">{{accuracy}}%</span>
+      <span style="position: absolute;left: 50%;top: 53%;color:#357dd3;font-size:40px;font-weight:bolder;">23</span>
+      <span style="position: absolute;left: 47%;top: 60%;color:#d7112f;font-size:50px;font-weight:700;">{{Math.round(correctNumber*10.5)}}</span>
+      <img style="position: absolute;left: 44%;bottom:10%;width: 12.5%;height: 10%;" src="../../assets/btnContinu.png"
+        @click="start()" />
     </div>
   </div>
 </template>
@@ -100,22 +63,72 @@
         isFinish: false, //是否答题结束
         surplusProglength: 100,
         progressSpan: 1000, //进度条多久减一次（毫秒）
-        progressStep: 5,
+        progressStep:10,
         intervalProgress: null,
-        topHeight: 0,
-        arrayLength:5,
-        itemArray:[],
-        questionIndex:0,
-        selectArry:[[23,25,28,32,37],[48,45,41,36,30],[20,21,23,26,30],[3,6,10,15,21],[7,14,21,28,35],[12,17,23,30,38]],
+        topHeight:0,
+        arrayLength: 5,
+        itemArray: [],
+        selectedIndex:null,
+        isCorrect:null,
+        totalAnswerNumber: 0, //总答题数
+        correctNumber: 0, //答对数量
+        selectArry: [{
+            title: ['25', '？', '28', '31', '35'],
+            option: [25, 28, 27, 26],
+            answerItem: 26
+          },
+          {
+            title: ['23', '25', '？', '32', '37'],
+            option: [26, 27, 28, 29],
+            answerItem: 28
+          },
+          {
+            title: ['48', '45', '41', '？', '30'],
+            option: [38, 37, 36, 35],
+            answerItem: 36
+          },
+          {
+            title: ['20', '21', '23', '26', '？'],
+            option: [28, 30, 34, 36],
+            answerItem: 30
+          },
+          {
+            title: ['3', '6', '10', '？', '21'],
+            option: [12, 13, 14, 15],
+            answerItem: 15
+          },
+          {
+            title: ['7', '14', '21', '28', '？'],
+            option: [30, 32, 35, 36],
+            answerItem: 35
+          },
+          {
+            title: ['？', '17', '23', '30', '38'],
+            option: [10, 12, 13, 15],
+            answerItem: 12
+          }
+        ],
+      }
+    },
+    computed:{
+      accuracy: function() {
+        return (this.correctNumber / this.totalAnswerNumber).toFixed(2) * 100;
       }
     },
     mounted() {
-      this.totalProgLength=this.$refs.imgPro.offsetHeight;
-      console.log(this.$refs.imgPro)
-      this.intervalPro();
-      this.initData();
+      this.start();
     },
     methods: {
+      start(){
+        this.topHeight=0;
+        this.isTimeout=false;
+        this.isFinish=false;
+        this.correctNumber=0;
+        this.totalAnswerNumber=0;
+        this.totalProgLength = this.$refs.imgPro.offsetHeight;
+        this.intervalPro();
+        this.initData();
+      },
       intervalPro() {
         if (this.intervalProgress != null) return
         this.intervalProgress = setInterval(() => {
@@ -123,17 +136,42 @@
             /* var span = this.surplusProglength - this.progressStep;
             this.surplusProglength = span < 0 ? 0 : span; */
             this.topHeight = this.topHeight + this.progressStep;
-            console.log(this.$refs.imgPro)
           } else {
             clearInterval(this.intervalProgress);
             this.intervalProgress = null;
+            this.isTimeout=true;
           }
         }, this.progressSpan);
       },
-      initData(){
+      initData() {
+        this.isCorrect=null;
+        this.selectedIndex=null;
+        this.itemArray = getRandomArr(this.selectArry, 1)[0];
+        //this.questionIndex=randomNumBoth(0,this.arrayLength-1,1);
+      },
+      checkItem(correctItem,num,index) {
+        if(this.isCorrect!=null)return;
+        this.totalAnswerNumber+=1;
+        this.selectedIndex=index;
+        this.playAudio(correctItem===num);
+        if(correctItem===num){
+          this.correctNumber+=1;
+          this.isCorrect=true;
+        }
+        else{
+          this.isCorrect=false;
+        }
+        setTimeout(()=>{
+          this.nexStep();
+        },1000);
 
-        this.itemArray=getRandomArr(this.selectArry,1)[0];
-        this.questionIndex=randomNumBoth(0,this.arrayLength-1,1);
+      },
+      nexStep(){
+        if(this.isTimeout){
+          this.isFinish=true;
+        }else{
+          this.initData();
+        }
       },
     }
   }
@@ -180,9 +218,9 @@
   }
 
   .rightDiv {
-    height: 61%;
+    height: 60%;
     position: absolute;
-    right: 6.3%;
+    right: 6.2%;
     top: 15.5%;
     width: 6%;
     overflow: hidden;
@@ -192,25 +230,8 @@
   .rightDiv img {
     width: 25%;
     position: relative;
-    bottom: 0;
+    top:1%;
     left: 0;
-  }
-
-  .lefDiv div {
-    display: table;
-    text-align: center;
-    background-color: #f8f6f8;
-    width: 100%;
-    height: 18.1%;
-    margin: 35% 0px;
-    box-shadow: 5px 5px 5px #484a3b
-  }
-
-  .lefDiv div span {
-    display: table-cell;
-    vertical-align: middle;
-    font-size: 30px;
-    font-weight: bold;
   }
 
   .divResult {
