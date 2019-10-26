@@ -70,16 +70,16 @@ export default new Router({
         title: '18、颜色Stroop'
       },
       children: [
-
+        {
+          path: '/train/stroop/caption',
+          name: 'Caption',
+          component: Caption,
+          meta: {
+            title: '说明'
+          }
+        },
       ]
     },
-    {
-      path: '/train/stroop/caption',
-      name: 'Caption',
-      component: Caption,
-      meta: {
-        title: '说明'
-      }
-    },
+
   ]
 })

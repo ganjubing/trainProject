@@ -1,7 +1,7 @@
 <template>
   <div class="cover">
     <div style="width: 50%;position: absolute ;left:25%;bottom: 0%;">
-      <router-link to="stroop/caption">
+      <router-link to="train/stroop/caption">
         <div style="width: 50%;float: left;"><img src="../../../assets/btnCaption.png" /></div>
       </router-link>
 
