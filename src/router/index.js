@@ -9,6 +9,7 @@ import TextSequence from '@/components/train/textSequence'
 import DigitalReasoning from '@/components/train/digitalReasoning'
 import StroopIndex from '@/components/train/stroop/index'
 import Caption from '@/components/train/stroop/caption'
+import ColorStroop from '@/components/train/stroop/colorStroop'
 
 Vue.use(Router)
 
@@ -80,6 +81,21 @@ export default new Router({
         },
       ]
     },
-
+   /* {
+      path: '/train/stroop/caption',
+      name: 'Caption',
+      component: Caption,
+      meta: {
+        title: '说明'
+      }
+    },
+    {
+      path: '/train/stroop/colorStroop',
+      name: 'ColorStroop',
+      component: ColorStroop,
+      meta: {
+        title: '颜色Stroop'
+      } */
+    },
   ]
 })
