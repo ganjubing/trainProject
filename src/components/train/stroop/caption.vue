@@ -10,8 +10,7 @@
       <img src="../../../assets/btnPrev.png" style="position: absolute;right: 25%;top:45%;" @click="isStep1=true" />
       <img src="../../../assets/btnNexDisable.png" style="position: absolute;right: 5%;top:45%;" />
     </div>
-    <img src="../../../assets/btnStart.png" style="position: absolute;right: 4%;bottom: 0;"
-    @click="$router.push({name:'ColorStroop'})"/>
+    <img src="../../../assets/btnStart.png" style="position: absolute;right: 4%;bottom: 0;" @click="$router.push({name:'ColorStroop'})" />
   </div>
 </template>
 
@@ -27,14 +26,13 @@
 
 <style>
   .caption {
-
+    overflow-y: hidden;
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
     background-image: url(../../../assets/stroop/captionbg.png);
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
+    background-size:cover;
     -moz-background-size: 100% 100%;
   }
 </style>
