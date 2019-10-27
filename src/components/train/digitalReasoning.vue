@@ -36,11 +36,11 @@
       <img class="progress" ref="imgPro" :style="{height:surplusProglength+'%',marginTop:topHeight+'px'}" src="../../assets/digital4/progranbar.png" />
     </div>
     <div class="divResult" v-show="isFinish">
-      <span style="position: absolute;left: 50%;top: 40%;color: #357dd3;font-size: 40px;font-weight: bolder;">{{correctNumber}}</span>
-      <span style="position: absolute;left: 50%;top: 46%;color:#357dd3;font-size: 40px;font-weight: bolder;">{{accuracy}}%</span>
-      <span style="position: absolute;left: 50%;top: 53%;color:#357dd3;font-size:40px;font-weight:bolder;">23</span>
+      <span style="position: absolute;left: 50%;top: 37.5%;color: #357dd3;font-size: 40px;font-weight: bolder;">{{correctNumber}}</span>
+      <span style="position: absolute;left: 50%;top: 44.5%;color:#357dd3;font-size: 40px;font-weight: bolder;">{{accuracy}}%</span>
+      <span style="position: absolute;left: 50%;top: 52%;color:#357dd3;font-size:40px;font-weight:bolder;">23</span>
       <span style="position: absolute;left: 47%;top: 60%;color:#d7112f;font-size:50px;font-weight:700;">{{Math.round(correctNumber*10.5)}}</span>
-      <img style="position: absolute;left: 44%;bottom:10%;width: 12.5%;height: 10%;" src="../../assets/btnContinu.png"
+      <img style="position: absolute;left: 44%;bottom:5%;width: 12.5%;height: 10%;" src="../../assets/btnContinu.png"
         @click="start()" />
     </div>
   </div>

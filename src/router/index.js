@@ -11,6 +11,10 @@ import StroopIndex from '@/components/train/stroop/index'
 import Caption from '@/components/train/stroop/caption'
 import ColorStroop from '@/components/train/stroop/colorStroop'
 
+import SatelliteIndex from '@/components/train/satellite/index'
+import CatelliteCaption from '@/components/train/satellite/caption'
+import SatelliteExploration from '@/components/train/satellite/satelliteExploration'
+
 Vue.use(Router)
 
 export default new Router({
@@ -76,7 +80,7 @@ export default new Router({
       name: 'Caption',
       component: Caption,
       meta: {
-        title: '说明'
+        title: '颜色Stroop-说明'
       }
     },
     {
@@ -87,5 +91,29 @@ export default new Router({
         title: '颜色Stroop'
       }
     },
+    {
+       path: '/train/satellite',
+       name: 'SatelliteIndex',
+       component: SatelliteIndex,
+       meta: {
+         title: '25、卫星探索'
+       },
+     },
+    {
+       path: '/train/satellite/caption',
+       name: 'CatelliteCaption',
+       component: CatelliteCaption,
+       meta: {
+         title: '卫星探索-说明'
+       }
+     },
+     {
+       path: '/train/satellite/satelliteExploration',
+       name: 'SatelliteExploration',
+       component:SatelliteExploration,
+       meta: {
+         title: '卫星探索'
+       }
+     },
   ]
 })

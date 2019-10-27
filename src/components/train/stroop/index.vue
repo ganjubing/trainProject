@@ -2,7 +2,7 @@
   <div class="cover">
     <div style="width: 50%;position: absolute ;left:25%;bottom: 0%;">
       <!-- <router-link :to="{name:'caption'}"> -->
-       <router-link :to="{path:'/train/stroop/caption'}">
+       <router-link :to="{path:'/train/satellite/caption'}">
         <div style="width: 50%;float: left;"><img src="../../../assets/btnCaption.png" /></div>
       </router-link>
 
@@ -25,7 +25,7 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    background-image: url(../../../assets/stroop/cover.png);
+    background-image: url(../../../assets/satellite/cover.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;

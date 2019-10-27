@@ -43,7 +43,7 @@
   }
 </script>
 
-<style>
+<style scoped="scoped">
   ul li {
     text-align: left;
     width: 90%;
