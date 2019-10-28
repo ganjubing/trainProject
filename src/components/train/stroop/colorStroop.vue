@@ -11,7 +11,7 @@
       <img v-if="isCorrect===true" src="../../../assets/correct.png" style="position:absolute;left: 43%;top:11%;z-index: 9999 ;" />
       <img v-if="isCorrect===false" src="../../../assets/incorrect.png" style="position:absolute;left: 42%;top:11%;z-index: 9999 ;" />
     </div>
-    <div style="position: absolute;left: 26.5%;bottom:0%;width:48.5%;height:30%;">
+    <div style="position: absolute;left: 26.5%;bottom:5%;width:48.5%;height:30%;">
       <div style="width: 50%;height: 100%;float: left;">
         <img :src="equalimg" style="width: 52.5%;height: 100%;" @mouseover="changeOver('equal')" @mouseout="changeOut('equal')" @click="checkItem(true)" />
       </div>
@@ -44,8 +44,8 @@
   export default {
     data() {
       return {
-        totalDuration: 50, //计时器总时长(秒)
-        surplusTime: 50, //当前剩余时长
+        totalDuration: 120, //计时器总时长(秒)
+        surplusTime: 120, //当前剩余时长
         isTimeout: false, //是否时间已到
         isFinish: false, //是否答题结束
         nextQuestionTime:500, //隔多久进入下一题
@@ -156,8 +156,8 @@
   }
   .stroop .surplusTime {
     position: absolute;
-    right:5.5%;
-    top: 3%;
+    right:7%;
+    top:4%;
     color:#f50c38;
     font-weight: bolder;
     font-size: 30px;

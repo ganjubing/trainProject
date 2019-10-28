@@ -14,33 +14,33 @@
       <li v-for="(number,index) in itemArray.option" :key="index" style="list-style-type: none;display: inline-block;font-size:40px;color:#000000;font-weight: bold;width: 15%;margin:0% 3%;">
         <div style="position:relative; display: table-cell;vertical-align:middle;text-align:center">
           <div v-if="selectedIndex==index">
-            <img style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
+            <img style="width: 70%;height: 70%;vertical-align: middle;" src="@/assets/digital4/whiteBlock.png" />
             <div v-if="isCorrect===true">
-              <img style="width: 70%;height: 100%;vertical-align: middle;position:absolute;left:15%;top:0;" src="../../assets/digital4/correctBlock.png" />
-              <img src="../../assets/correct.png" style="width:60%;height:80%;position: absolute;top:35%;left:50%;opacity:.8;" />
+              <img style="width: 70%;height: 100%;vertical-align: middle;position:absolute;left:15%;top:0;" src="@/assets/digital4/correctBlock.png" />
+              <img src="@/assets/correct.png" style="width:60%;height:80%;position: absolute;top:35%;left:50%;opacity:.8;" />
             </div>
             <div v-if="isCorrect===false">
-              <img style="width: 70%;height: 100%;vertical-align: middle;z-index:9999;position:absolute;left:15%;top:0;" src="../../assets/digital4/incorrectBlock.png" />
-              <img src="../../assets/incorrect.png" style="width:60%;height:80%;position: absolute;top:35%;left:50%;opacity:.8;" />
+              <img style="width: 70%;height: 100%;vertical-align: middle;position:absolute;left:15%;top:0;" src="@/assets/digital4/incorrectBlock.png" />
+              <img src="@/assets/incorrect.png" style="width:60%;height:80%;position: absolute;top:35%;left:50%;opacity:.8;" />
             </div>
             <span style="position: absolute;left:30%;top:20%;z-index: 9999;color:white;">{{number}}</span>
           </div>
           <div v-if="selectedIndex!=index" @click="checkItem(itemArray.answerItem,number,index)">
-            <img  style="width: 70%;height: 70%;vertical-align: middle;" src="../../assets/digital4/whiteBlock.png" />
+            <img  style="width: 70%;height: 70%;vertical-align: middle;" src="@/assets/digital4/whiteBlock.png" />
             <span style="position: absolute;left:30%;top:20%;z-index: 9999;">{{number}}</span>
           </div>
         </div>
       </li>
     </ul>
     <div class="rightDiv">
-      <img class="progress" ref="imgPro" :style="{height:surplusProglength+'%',marginTop:topHeight+'px'}" src="../../assets/digital4/progranbar.png" />
+      <img class="progress" ref="imgPro" :style="{height:surplusProglength+'%',marginTop:topHeight+'px'}" src="@/assets/digital4/progranbar.png" />
     </div>
     <div class="divResult" v-show="isFinish">
       <span style="position: absolute;left: 50%;top: 37.5%;color: #357dd3;font-size: 40px;font-weight: bolder;">{{correctNumber}}</span>
       <span style="position: absolute;left: 50%;top: 44.5%;color:#357dd3;font-size: 40px;font-weight: bolder;">{{accuracy}}%</span>
       <span style="position: absolute;left: 50%;top: 52%;color:#357dd3;font-size:40px;font-weight:bolder;">23</span>
       <span style="position: absolute;left: 47%;top: 60%;color:#d7112f;font-size:50px;font-weight:700;">{{Math.round(correctNumber*10.5)}}</span>
-      <img style="position: absolute;left: 44%;bottom:5%;width: 12.5%;height: 10%;" src="../../assets/btnContinu.png"
+      <img style="position: absolute;left: 44%;bottom:5%;width: 12.5%;height: 10%;" src="@/assets/btnContinu.png"
         @click="start()" />
     </div>
   </div>
@@ -52,7 +52,7 @@
     randomLimit,
     getRandomArr,
     randomNumBoth,
-  } from '../../utils/common.js'
+  } from '@/utils/common.js'
   export default {
     data() {
       return {
@@ -63,7 +63,7 @@
         isFinish: false, //是否答题结束
         surplusProglength: 100,
         progressSpan: 1000, //进度条多久减一次（毫秒）
-        progressStep:10,
+        progressStep:1,
         intervalProgress: null,
         topHeight:0,
         arrayLength: 5,
@@ -182,7 +182,7 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    background-image: url(../../assets/digital4/bg.png);
+    background-image: url(../../../assets/digital4/bg.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
@@ -240,7 +240,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    background-image: url(../../assets/digital4/result.png);
+    background-image: url(../../../assets/digital4/result.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center, center;

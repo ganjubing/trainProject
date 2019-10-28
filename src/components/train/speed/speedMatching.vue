@@ -1,32 +1,32 @@
 <template>
   <div class="speed">
     <span class="surplusTime">{{surplusTime}}</span>
-    <img style="position:absolute;right:4%;top:10%;width: 12.5%;height: 10%;" src="../../assets/star.png" @click="timerStar" />
+    <!-- <img style="position:absolute;right:4%;top:10%;width: 12.5%;height: 10%;" src="@/assets/star.png" @click="timerStar" />
     <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height:10%;background-color: #808080;
-    opacity:.7;border-radius:7px;position:absolute;right:4%;top:10%;z-index: 999;"></div>
-    <img src="../../assets/speed1/ready.png" style="width:18.5%;height:32%;position:absolute;top:35%;left:41%;" v-if="isReady" />
+    opacity:.7;border-radius:7px;position:absolute;right:4%;top:10%;z-index: 999;"></div>-->
+    <img src="@/assets/speed1/ready.png" style="width:18.5%;height:32%;position:absolute;top:35%;left:41%;" v-if="isReady" />
 
     <div class="container">
       <div class="list" @click="checkItem(item,index)" v-if="itemList.length>0" v-for="(item,index) in itemList" :key="index">
         <div style="position: relative;width: 100%;height: 100%;left: 0%;top:0%;">
           <img v-if="(!isWaiting&&item.checkStatus!=true)&&(!isWaiting&&item.checkStatus!=false&&item.value!=answerRightItem.value)||(!isWaiting&&item.checkStatus===null&&isAnswerRight===null)"
-            style="width:93%;height:93%;margin:3% 3%;" src="../../assets/speed1/unknow.png" />
+            style="width:93%;height:93%;margin:3% 3%;" src="@/assets/speed1/unknow.png" />
           <img v-if="isWaiting||item.checkStatus!=null||(answerRightItem.value===item.value&&isAnswerRight!=null)"
             style="width:90%;height:90%;margin:3% 3%;border:1px dashed #808080;border-radius: 10px;" :src="item.img" />
           <img v-if="item.checkStatus===true" style="width:90%;height:90%;position: absolute;left:42%;opacity:.8;top: 32%;"
-            src="../../assets/speed1/right.png" />
+            src="@/assets/speed1/right.png" />
           <img v-if="item.checkStatus===false" style="width:90%;height:90%;position: absolute;left: 42%;opacity:.8;top:32%;"
-            src="../../assets/speed1/error.png" />
+            src="@/assets/speed1/error.png" />
         </div>
 
       </div>
     </div>
-    <span style="position: absolute;right:48%;bottom:5%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.typeName}}</span>
+    <span style="position: absolute;right:49%;bottom:7%;font-weight: bolder;font-size: 30px;color: #F0F0F0;">{{answerItem.typeName}}</span>
     <div class="divResult" v-show="isFinish">
       <span style="position: absolute;left: 53%;top: 42.5%;color: #357dd3;font-size: 20px;font-weight: bolder;">{{spanTimeLength}}毫秒</span>
       <span style="position: absolute;left: 53%;top: 53%;color:#357dd3;font-size: 20px;font-weight: bolder;">{{accuracy}}%</span>
       <span style="position: absolute;left: 45%;top: 65%;color:#d7112f;font-size:50px;font-weight:900;">{{Math.round(correctNumber*10.5)}}</span>
-      <img style="position: absolute;left: 44%;bottom: 4%;width: 12.5%;height: 10%;" src="../../assets/visual2/btnContinu.png"
+      <img style="position: absolute;left: 44%;bottom: 4%;width: 12.5%;height: 10%;" src="@/assets/visual2/btnContinu.png"
         @click="continu()" />
     </div>
 
@@ -40,8 +40,8 @@
     randomLimit,
     getRandomArr,
     spanTime
-  } from '../../utils/common.js'
-  import unkow from '../../assets/speed1/unknow.png'
+  } from '@/utils/common.js'
+  import unkow from '@/assets/speed1/unknow.png'
   export default {
     name: 'SpeedMathching',
     data() {
@@ -74,52 +74,52 @@
         selectedItem: null, //用户选着项
         rightItems: [{
           name: '苹果',
-          img: require("../../assets/speed1/images/apple.jpg"),
+          img: require("@/assets/speed1/images/apple.jpg"),
           value: 1,
         }, {
           name: '香蕉',
-          img: require("../../assets/speed1/images/banana.jpg"),
+          img: require("@/assets/speed1/images/banana.jpg"),
           value: 1
         }, {
           name: '桃子',
-          img: require("../../assets/speed1/images/peach.jpg"),
+          img: require("@/assets/speed1/images/peach.jpg"),
           value: 1
         }, {
           name: '葡萄',
-          img: require("../../assets/speed1/images/grape.jpg"),
+          img: require("@/assets/speed1/images/grape.jpg"),
           value: 1
         }, {
           name: '橘子',
-          img: require("../../assets/speed1/images/orange.jpg"),
+          img: require("@/assets/speed1/images/orange.jpg"),
           value: 1
         }, {
           name: '西瓜',
-          img: require("../../assets/speed1/images/watermelon.jpg"),
+          img: require("@/assets/speed1/images/watermelon.jpg"),
           value: 1
         }, ],
         otherItems: [{
           name: '白菜',
-          img: require("../../assets/speed1/images/cabbage.jpg"),
+          img: require("@/assets/speed1/images/cabbage.jpg"),
           value: 2
         }, {
           name: '番茄',
-          img: require("../../assets/speed1/images/tomato.jpg"),
+          img: require("@/assets/speed1/images/tomato.jpg"),
           value: 3
         }, {
           name: '茄子',
-          img: require("../../assets/speed1/images/eggplant.jpg"),
+          img: require("@/assets/speed1/images/eggplant.jpg"),
           value: 4
         }, {
           name: '黄瓜',
-          img: require("../../assets/speed1/images/cucumber.jpg"),
+          img: require("@/assets/speed1/images/cucumber.jpg"),
           value: 5
         }, {
           name: '大蒜',
-          img: require("../../assets/speed1/images/garlic.jpg"),
+          img: require("@/assets/speed1/images/garlic.jpg"),
           value: 6
         }, {
           name: '辣椒',
-          img: require("../../assets/speed1/images/chili.jpg"),
+          img: require("@/assets/speed1/images/chili.jpg"),
           value: 7
         }, ],
         itemList: [],
@@ -130,7 +130,9 @@
         return (this.correctNumber / this.totalAnswerNumber).toFixed(2) * 100;
       }
     },
-    mounted() {},
+    mounted() {
+      this.timerStar();
+    },
     methods: {
       timerStar() {
         this.intervalTimer();
@@ -234,7 +236,7 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    background-image: url(../../assets/speed1/bg.png);
+    background-image: url(../../../assets/speed1/bg.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
@@ -281,7 +283,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    background-image: url(../../assets/speed1/result.png);
+    background-image: url(../../../assets/speed1/result.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center, center;

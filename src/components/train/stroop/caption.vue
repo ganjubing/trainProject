@@ -1,5 +1,5 @@
 <template>
-  <div class="caption">
+  <div class="stroopCaption">
     <div v-show="isStep1" style="width: 100%;height: 100%;">
       <img src="../../../assets/stroop/step1.png" style="width: 100%;height: 100%;" />
       <img src="../../../assets/btnPrevDisable.png" style="position: absolute;right: 25%;top:45%;" />
@@ -25,7 +25,7 @@
 </script>
 
 <style>
-  .caption {
+  .stroopCaption {
     overflow-y: hidden;
     width: 100%;
     height: 100%;

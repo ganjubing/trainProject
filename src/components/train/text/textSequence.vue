@@ -1,11 +1,11 @@
 <template>
   <div class="sequence">
     <span class="surplusTime">{{surplusTime}}</span>
-    <img style="position:absolute;right:20%;top:0%;width: 12.5%;height: 10%;" src="../../assets/star.png" @click="timerStar" />
+    <!-- <img style="position:absolute;right:20%;top:0%;width: 12.5%;height: 10%;" src="@/assets/star.png" @click="timerStar" />
     <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height:10%;background-color: #808080;
-    opacity:.7;border-radius:7px;position:absolute;right:20%;top:0%;z-index: 999;"></div>
+    opacity:.7;border-radius:7px;position:absolute;right:20%;top:0%;z-index: 999;"></div> -->
     <div v-show="isShowTipInfo">
-      <img src="../../assets/text/tipInfo.png" style="width: 100%;height: 100%;z-index: 9999;position: absolute;left: 0;top:0;" />
+      <img src="@/assets/text/tipInfo.png" style="width: 100%;height: 100%;z-index: 9999;position: absolute;left: 0;top:0;" />
       <div style="position: absolute;width: 30%;height: 10%;left: 25%;top:50%;z-index: 9999;">
         <div style="height:100%;width: 60%;float: left;display: table;">
           <span style="font-size: 20px;font-weight: bolder;display: table-cell;vertical-align: middle;">本次练习第{{ruleItem.index}}个位置固定为</span></div>
@@ -15,7 +15,7 @@
           </div>
         </div>
       </div>
-      <img @click="start" src="../../assets/text/btnBegin.png" style="width:9%;height: 17%;position: absolute;top:47%;right:28%;z-index: 9999;" />
+      <img @click="start" src="@/assets/text/btnBegin.png" style="width:9%;height: 17%;position: absolute;top:47%;right:28%;z-index: 9999;" />
     </div>
     <div class="lefDiv">
       <div v-if="isStart" :style="{visibility:option.selected?'hidden':'visible'}" @click="selectItem(option,index)" v-for="(option,index) in randomArray"
@@ -31,23 +31,23 @@
               <span style="display:table-cell;vertical-align: middle;font-size:25px;font-weight: bold;">{{item.text}}</span>
             </div>
           </div>
-          <img v-if="arr.showCorrectImg" src="../../assets/correct.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
-          <img v-if="arr.showIncorrectImg" src="../../assets/incorrect.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
+          <img v-if="arr.showCorrectImg" src="@/assets/correct.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
+          <img v-if="arr.showIncorrectImg" src="@/assets/incorrect.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
         </div>
-        <img v-if="arr.num===currentNumber&&isStart" src="../../assets/text/overUnderLine.png" style="height:3%;width: 100%;" />
-        <img v-else src="../../assets/text/underLine.png" style="height:3%;width: 100%;" />
+        <img v-if="arr.num===currentNumber&&isStart" src="@/assets/text/overUnderLine.png" style="height:3%;width: 100%;" />
+        <img v-else src="@/assets/text/underLine.png" style="height:3%;width: 100%;" />
       </div>
     </div>
     <div v-show="isRestart" style="position: absolute;left: 0;top:0;width: 100%;height: 100%;">
-      <img src="../../assets/text/restartip.png" style="height:100%;width: 100%;position: absolute;left:0;top:0;z-index: 9999;" />
+      <img src="@/assets/text/restartip.png" style="height:100%;width: 100%;position: absolute;left:0;top:0;z-index: 9999;" />
       <span style="color: #fb7b06;font-size: 25px;font-weight: bolder;position: relative;top:38%;left: 5%;z-index: 9999;">错误过多！请重新开始！</span><br />
-      <img @click="restart()" src="../../assets/text/btnRestart.png" style="width:10%;height: 10%;position: relative;top:43%;left:4.5%;z-index: 9999;" />
+      <img @click="restart()" src="@/assets/text/btnRestart.png" style="width:10%;height: 10%;position: relative;top:43%;left:4.5%;z-index: 9999;" />
     </div>
     <div class="divResult" v-show="isFinish">
       <span style="position: absolute;left: 53%;top: 38%;color: #357dd3;font-size: 40px;font-weight: bolder;">{{totalAnswerNumber}}</span>
       <span style="position: absolute;left: 53%;top: 45%;color:#357dd3;font-size: 40px;font-weight: bolder;">{{accuracy}}%</span>
       <span style="position: absolute;left: 45%;top: 55%;color:#d7112f;font-size:50px;font-weight:900;">{{Math.round(correctNumber*10.5)}}</span>
-      <img style="position: absolute;left: 44%;bottom:10%;width: 12.5%;height: 10%;" src="../../assets/visual2/btnContinu.png"
+      <img style="position: absolute;left: 44%;bottom:10%;width: 12.5%;height: 10%;" src="@/assets/visual2/btnContinu.png"
         @click="continu()" />
     </div>
   </div>
@@ -59,7 +59,7 @@
     randomLimit,
     getRandomArr,
     randomNumBoth,
-  } from '../../utils/common.js'
+  } from '@/utils/common.js'
   export default {
     data() {
       return {
@@ -100,6 +100,7 @@
       }
     },
     mounted() {
+      this.timerStar();
       this.initData();
     },
     methods: {
@@ -265,7 +266,7 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    background-image: url(../../assets/text/bg.png);
+    background-image: url(../../../assets/text/bg.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
@@ -331,7 +332,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    background-image: url(../../assets/text/result.png);
+    background-image: url(../../../assets/text/result.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center,center;

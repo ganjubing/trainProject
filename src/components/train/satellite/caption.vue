@@ -1,5 +1,5 @@
 <template>
-  <div class="caption">
+  <div class="satelliteCaption">
     <div v-show="isStep1" style="width: 100%;height: 100%;">
       <img src="@/assets/satellite/step1.png" style="width: 100%;height: 100%;" />
       <img src="@/assets/btnPrevDisable.png" style="position: absolute;right: 25%;top:38%;" />
@@ -10,7 +10,7 @@
       <img src="@/assets/btnPrev.png" style="position: absolute;right: 25%;top:38%;" @click="isStep1=true" />
       <img src="@/assets/btnNexDisable.png" style="position: absolute;right: 5%;top:38%;" />
     </div>
-    <img src="@/assets/btnStart.png" style="position: absolute;right: 4%;bottom: 0;" @click="$router.push({name:'SatelliteExploration'})" />
+    <img src="@/assets/btnStart.png" style="position: absolute;right: 4%;bottom:4%;" @click="$router.push({name:'SatelliteExploration'})" />
   </div>
 </template>
 
@@ -25,14 +25,13 @@
 </script>
 
 <style>
-  .caption {
+  .satelliteCaption {
     overflow-y: hidden;
     width: 100%;
-    height: 100%;
-    position: absolute;
+    height:100vh;
+    /* position: absolute; */
     background-image: url(../../../assets/satellite/captionbg.png);
     background-repeat: no-repeat;
-    background-size:cover;
-    -moz-background-size: 100% 100%;
+    background-size:100% 100%; /*随着原始比例缩放*/
   }
 </style>

@@ -9,29 +9,29 @@
             <img v-for="(data,i) in sourceItem" :key="i" :src="data.img" @click="checkItem(data,index)">
           </div>
         </div>
-        <img class="errorImg" src="../../assets/visual2/error.png" v-show="itemList[index].isShowIncorrectImg" />
+        <img class="errorImg" src="@/assets/visual2/error.png" v-show="itemList[index].isShowIncorrectImg" />
         <div class="itemImg">
           <img style="width: 100%;height: 100%;" :src="item.img" v-show="(isShowMoment&&itemList[index].isItem)||(itemList[index].status&&itemList[index].isItem&&itemList[index].isAnswerRight===true)" />
-          <img v-show="itemList[index].isShowCorrectImg" src="../../assets/visual2/correct.png" style="width:60%;height: 60%;position: absolute;top:20%;left:22%;opacity:.8;">
+          <img v-show="itemList[index].isShowCorrectImg" src="@/assets/visual2/correct.png" style="width:60%;height: 60%;position: absolute;top:20%;left:22%;opacity:.8;">
         </div>
 
       </div>
 
     </div>
-    <img class="progress" :style="{width:surplusProglength+'%'}" src="../../assets/visual2/progranbar.png" />
-    <img class="readyImg" src="../../assets/visual2/ready.png" v-if="isReady" />
+    <img class="progress" :style="{width:surplusProglength+'%'}" src="@/assets/visual2/progranbar.png" />
+    <img class="readyImg" src="@/assets/visual2/ready.png" v-if="isReady" />
     <div class="divResult" v-show="isFinish">
       <span style="position: absolute;left: 19%;top: 42.5%;color: #357dd3;">{{totalCorrectNumber}}个</span>
       <span style="position: absolute;left: 19%;top: 51%;color:#357dd3;">{{accuracy}}%</span>
       <span style="position: absolute;left: 10%;top: 60%;color:#d7112f;font-size:50px;font-weight:900;">{{Math.round(totalCorrectNumber*10.5)}}</span>
-      <img style="position: absolute;left: 45%;bottom: 8%;width: 12.5%;height: 10%;" src="../../assets/visual2/btnContinu.png" @click="continu()" />
+      <img style="position: absolute;left: 45%;bottom: 8%;width: 12.5%;height: 10%;" src="@/assets/visual2/btnContinu.png" @click="continu()" />
     </div>
     <div class="tipInfo" v-if="isNextQuestion">
       <span v-html="nextTitle"></span>
     </div>
-    <img style="position:absolute;right:4%;top:10%;width: 12.5%;height: 10%;" src="../../assets/star.png" @click="timerStar" />
+    <!-- <img style="position:absolute;right:4%;top:10%;width: 12.5%;height: 10%;" src="../../assets/star.png" @click="timerStar" />
     <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height: 10%;background-color: #808080;opacity:.7;border-radius:7px;position:absolute;right:4%;top:10%;z-index: 999;"></div>
-    <img style="position:absolute;right:38.5%;top:5%;" src="../../assets/visual2/title.png" />
+    <img style="position:absolute;right:38.5%;top:5%;" src="../../assets/visual2/title.png" /> -->
 
   </div>
 </template>
@@ -39,21 +39,21 @@
 <script>
   import {
     randomNumBoth
-  } from '../../utils/common.js'
-  import errorImg from '../../assets/visual2/error.png'
-  import horseImg from '../../assets/visual2/horse.png'
-  import airplaneImg from '../../assets/visual2/airplane.png'
+  } from '@/utils/common.js'
+  import errorImg from '@/assets/visual2/error.png'
+  import horseImg from '@/assets/visual2/horse.png'
+  import airplaneImg from '@/assets/visual2/airplane.png'
   export default {
     data() {
       return {
         sourceItem: [{
           name: 'horse',
           value: 1,
-          img: require("../../assets/visual2/horse.png")
+          img: require("@/assets/visual2/horse.png")
         }, {
           name: 'airplane',
           value: 2,
-          img: require("../../assets/visual2/airplane.png")
+          img: require("@/assets/visual2/airplane.png")
         }],
         totalDuration: 200, //计时器总时长
         surplusTime: 200, //当前剩余时长
@@ -90,11 +90,10 @@
       }
     },
     mounted() {
-      this.initData();
+      this.timerStar();
     },
     methods: {
       timerStar() {
-
         //this.itemList.map(n => n.status = false);
         this.isReady = true;
         //this.initData();
@@ -293,7 +292,7 @@
     height: 100%;
     position: fixed;
     /* background: url(../../assets/visual2/bg.png) no-repeat center 0; */
-    background-image: url(../../assets/visual2/bg.png);
+    background-image: url(../../../assets/visual2/bg.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center center;
@@ -322,7 +321,7 @@
     display: inline-block;
     margin: 0.3%;
     border-radius: 15px;
-    background-image: url(../../assets/visual2/container.png);
+    background-image: url(../../../assets/visual2/container.png);
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
@@ -335,7 +334,7 @@
     left: -50%;
     top: -90%;
     height: 150%;
-    background-image: url(../../assets/visual2/tip.png);
+    background-image: url(../../../assets/visual2/tip.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -393,7 +392,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    background-image: url(../../assets/visual2/info.png);
+    background-image: url(../../../assets/visual2/info.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -416,7 +415,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    background-image: url(../../assets/visual2/result.png);
+    background-image: url(../../../assets/visual2/result.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center,center;
