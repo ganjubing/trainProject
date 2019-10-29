@@ -24,6 +24,10 @@ import SatelliteIndex from '@/components/train/satellite/index'
 import CatelliteCaption from '@/components/train/satellite/caption'
 import SatelliteExploration from '@/components/train/satellite/satelliteExploration'
 
+import AdditionIndex from '@/components/train/addition/index'
+import AdditionCaption from '@/components/train/addition/caption'
+import AdditionStorm from '@/components/train/addition/additionStorm'
+
 Vue.use(Router)
 
 export default new Router({
@@ -209,6 +213,35 @@ export default new Router({
       component: SatelliteExploration,
       meta: {
         title: '卫星探索',
+        isTitle: false,
+      }
+    },
+    
+    
+    {
+      path: '/train/addition',
+      name: 'AdditionIndex',
+      component: AdditionIndex,
+      meta: {
+        title: '5、加法风暴',
+        isTitle: true,
+      },
+    },
+    {
+      path: '/train/addition/caption',
+      name: 'AdditionCaption',
+      component: AdditionCaption,
+      meta: {
+        title: '加法风暴-说明',
+        isTitle: false,
+      }
+    },
+    {
+      path: '/train/addition/additionStorm',
+      name: 'AdditionStorm',
+      component: AdditionStorm,
+      meta: {
+        title: '加法风暴',
         isTitle: false,
       }
     },
