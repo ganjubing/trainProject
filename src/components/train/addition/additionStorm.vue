@@ -6,8 +6,10 @@
         <img :src="boatStatusImg" style="width: 100%;height: 100%;background-color: #00FFFF;" />
 
       </div> -->
-      <!-- <div class="boat" style=""></div> -->
-      <img ref="smashImg" v-show="isSmash" :src="boatSmashImg" :style="{'width':'20%','height':'7%','background-color':'#00FFFF','margin-top':'62%'}" />
+     <!-- <div class="boat" style="background-color: #00FFFF;">
+        <span style="font-size:18px;font-weight:bold;position: absolute;top:20%;left:35%;">1+1</span>
+      </div> -->
+      <!-- <img ref="smashImg" v-show="isSmash" :src="boatSmashImg" :style="{'width':'20%','height':'7%','background-color':'#00FFFF','margin-top':'62%'}" /> -->
     </div>
     <div class="calc" style="">
       <div style="width: 75%;height: 18.8%;margin: 16.5% 11% 2.5% 11%;">
@@ -54,7 +56,7 @@
               <img src="../../../assets/addition/num0.png" style="height: 100%;width: 100%;" />
             </div>
           </div>
-          <div style="width: 26%;height: 100%;float: left;margin-left:2%;">
+          <div @click="checkItem" style="width: 26%;height: 100%;float: left;margin-left:2%;">
             <img src="../../../assets/addition/btnConfirm.png" style="height: 27%;width:28%; position: absolute;right:14%;bottom:11%;z-index: 1;" />
           </div>
         </div>
@@ -78,12 +80,12 @@
     mounted() {
       this.mainHeight = this.$refs.main.offsetHeight;
       /* this.boatHeight=this.$refs.boat[0].offsetHeight; */
-      this.smashImgH = this.$refs.smashImg.height;
+      /* this.smashImgH = this.$refs.smashImg.height; */
       /* console.log(this.smashImgH)
        this.mainHeight=parseInt(this.mainHeight)-parseInt(this.boatHeight); */
-      //this.createBoat()
-      this.startBoat();
-      this.create();
+      this.createBoat()
+      //this.startBoat();
+      //his.create();
       /* this.boatLeft=randomNumBoth(0,91.6,1);
       var dd=getRandomArr(this.boatColors,1);
       console.log(dd); */
@@ -100,7 +102,9 @@
         boatStatusImg: boatImg,
         boatSmashImg: boatSmash,
         isSmash: false,
+        downSpeed: 20, //下降速度 px
         boatLeft: 0,
+        results:[],
         boatColors: ['#32c333', '#ff7aab', '#f2582a', '#fd7bad'],
       }
     },
@@ -124,21 +128,53 @@
         var topH = 0;
         var left = randomNumBoth(0, 91.6, 1)[0];
         var bg = getRandomArr(this.boatColors, 1)[0];
-        var div = document.createElement('div');
-        div.className = "boat";
-        div.style.left = left + '%';
-        div.style.top = topH + '%';
-        div.style.backgroundColor = bg;
-        document.getElementById("divMain").appendChild(div);
+        var nums = randomNumBoth(1, 30, 2);
+        var num1 = nums[0];
+        var num2 = nums[1];
+        var result = num1 + num2;
+        this.results.push(result);
+        var divBoat = document.createElement('div');
+        divBoat.className = "boat";
+        divBoat.style.left = left + '%';
+        divBoat.style.top = topH + '%';
+        divBoat.style.backgroundColor = bg;
+        var spans = document.createElement('span');
+        divBoat.appendChild(spans);
+        spans.innerText = num1 + '+' + num2;
+        var divSmash = document.createElement('div');
+        divSmash.className = "boatSmash";
+        divSmash.style.marginLeft = left + '%';
+        divSmash.style.backgroundColor = bg;
+        divSmash.style.display = 'none';
+        document.getElementById("divMain").appendChild(divBoat);
+        document.getElementById("divMain").appendChild(divSmash);
+        var boatH = document.getElementsByClassName("boat")[0].offsetHeight;
+        console.log(this.results)
         var interverBoat = setInterval(() => {
-          var currentH = topH + 20;
-          if (currentH < this.mainHeight) {
+          var currentH = topH + this.downSpeed;
+          if (currentH < (this.mainHeight - boatH)) {
             topH = currentH;
+            divBoat.style.top = topH + 'px';
           } else {
             this.isSmash = true;
-            //this.boatStatusImg=boatSmash;
+            divBoat.remove();
+            divSmash.style.display = 'block';
+            this.removeSmash(divSmash);
+            for(var i = 0; i < this.results.length; i++) {
+                if( this.results[i] == result) {
+                 this.results.splice(i, 1);
+                 break;
+                }
+               }
             clearInterval(interverBoat)
+            console.log(this.results)
+            this.createBoat();
           }
+        }, 500);
+      },
+      removeSmash(dom) {
+        setTimeout(() => {
+          dom.remove();
         }, 500);
       },
       create() {
@@ -146,7 +182,7 @@
         var left = randomNumBoth(0, 91.6, 1)[0];
         var bg = getRandomArr(this.boatColors, 1)[0];
         var MyComponent = Vue.extend({
-          template: "<div class='boat' v-bind:style='[baseStyles]'></div>",
+          template: "<div class='boat' v-bind:style='{marin-top:marginTopH}'></div>",
           methods: {
             selectResult: function() {
               var interverBoat = setInterval(() => {
@@ -158,10 +194,12 @@
                   //this.boatStatusImg=boatSmash;
                   clearInterval(interverBoat)
                 }
-this.baseStyles = Object.assign({}, this.baseStyles, {marginTop:that.marginTopH})
+                this.baseStyles = Object.assign({}, this.baseStyles, {
+                  marginTop: that.marginTopH
+                })
               }, 500);
 
-              
+
             }
           },
           mounted() {
@@ -170,8 +208,9 @@ this.baseStyles = Object.assign({}, this.baseStyles, {marginTop:that.marginTopH}
           },
           data() {
             return {
+              marginTopH: that.marginTopH + '%',
               baseStyles: {
-                marginTop: that.marginTopH + '%',
+                'margin-top': that.marginTopH + '%',
                 backgroundColor: bg,
                 left: left + '%',
               },
@@ -202,6 +241,15 @@ this.baseStyles = Object.assign({}, this.baseStyles, {marginTop:that.marginTopH}
           }
         }, 500);
       },
+    checkItem(){
+      debugger
+      if(this.results.indexOf(this.result)>-1){
+        alert('答对了')
+      }else{
+        alert('打错了')
+      }
+    }
+
     },
   }
 </script>
@@ -246,5 +294,21 @@ this.baseStyles = Object.assign({}, this.baseStyles, {marginTop:that.marginTopH}
     height: 12.4%;
     background-image: url(../../../assets/addition/boat.png);
     background-size: cover;
+  }
+
+  .boatSmash {
+    width: 15%;
+    height: 5%;
+    margin-top: 64%;
+    background-image: url(../../../assets/addition/boatSmash1.png);
+    background-size: cover;
+  }
+
+  .boat span {
+    font-size: 18px;
+    font-weight: bold;
+    position: absolute;
+    top: 20%;
+    left: 25%;
   }
 </style>
