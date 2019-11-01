@@ -6,7 +6,7 @@
         <img :src="boatStatusImg" style="width: 100%;height: 100%;background-color: #00FFFF;" />
 
       </div> -->
-     <!-- <div class="boat" style="background-color: #00FFFF;">
+      <!-- <div class="boat" style="background-color: #00FFFF;">
         <span style="font-size:18px;font-weight:bold;position: absolute;top:20%;left:35%;">1+1</span>
       </div> -->
       <!-- <img ref="smashImg" v-show="isSmash" :src="boatSmashImg" :style="{'width':'20%','height':'7%','background-color':'#00FFFF','margin-top':'62%'}" /> -->
@@ -83,7 +83,8 @@
       /* this.smashImgH = this.$refs.smashImg.height; */
       /* console.log(this.smashImgH)
        this.mainHeight=parseInt(this.mainHeight)-parseInt(this.boatHeight); */
-      this.createBoat()
+      this.createBoat();
+      this.intervalTimer();
       //this.startBoat();
       //his.create();
       /* this.boatLeft=randomNumBoth(0,91.6,1);
@@ -92,7 +93,14 @@
     },
     data() {
       return {
-        surplusTime: 99,
+        totalDuration: 50, //计时器总时长(秒)
+        surplusTime: 50, //当前剩余时长
+        isTimeout: false, //是否时间已到
+        isFinish: false, //是否答题结束
+        totalAnswerNumber: 0,
+        correctNumber: 0,
+        intervalTime: null,
+        interverBoat:null,
         result: '0',
         mainHeight: 0,
         boatHeight: 0,
@@ -104,11 +112,27 @@
         isSmash: false,
         downSpeed: 20, //下降速度 px
         boatLeft: 0,
-        results:[],
+        results: [],
         boatColors: ['#32c333', '#ff7aab', '#f2582a', '#fd7bad'],
       }
     },
     methods: {
+      intervalTimer() {
+        this.surplusTime = this.totalDuration;
+        this.isFinish = false;
+        this.totalAnswerNumber = 0;
+        this.correctNumber = 0;
+        this.isTimeout = false;
+        // 计时器为空，操作
+        if (this.intervalTime != null) return;
+        this.intervalTime = setInterval(() => {
+          if (this.surplusTime > 0) {
+            this.surplusTime = this.surplusTime - 1;
+          } else {
+            this.isTimeout = true;
+          }
+        }, 1000)
+      },
       inputNumber(val) {
         if (this.result.length > 6) return;
         if (parseInt(this.result) <= 0 && val === 0) {
@@ -116,7 +140,6 @@
         } else {
           this.result = this.result == '0' ? val : this.result.toString() + val.toString();
         }
-        console.log(this.result)
       },
       doClear() {
         this.result = this.result.substring(0, this.result.length - 1)
@@ -138,6 +161,7 @@
         divBoat.style.left = left + '%';
         divBoat.style.top = topH + '%';
         divBoat.style.backgroundColor = bg;
+        divBoat.id='divBoat'+result;
         var spans = document.createElement('span');
         divBoat.appendChild(spans);
         spans.innerText = num1 + '+' + num2;
@@ -146,11 +170,11 @@
         divSmash.style.marginLeft = left + '%';
         divSmash.style.backgroundColor = bg;
         divSmash.style.display = 'none';
+        divSmash.id='divSmash'+result;
         document.getElementById("divMain").appendChild(divBoat);
         document.getElementById("divMain").appendChild(divSmash);
         var boatH = document.getElementsByClassName("boat")[0].offsetHeight;
-        console.log(this.results)
-        var interverBoat = setInterval(() => {
+        this.interverBoat = setInterval(() => {
           var currentH = topH + this.downSpeed;
           if (currentH < (this.mainHeight - boatH)) {
             topH = currentH;
@@ -160,15 +184,15 @@
             divBoat.remove();
             divSmash.style.display = 'block';
             this.removeSmash(divSmash);
-            for(var i = 0; i < this.results.length; i++) {
-                if( this.results[i] == result) {
-                 this.results.splice(i, 1);
-                 break;
-                }
-               }
-            clearInterval(interverBoat)
-            console.log(this.results)
-            this.createBoat();
+            for (var i = 0; i < this.results.length; i++) {
+              if (this.results[i] == result) {
+                this.results.splice(i, 1);
+                break;
+              }
+            }
+            clearInterval(this.interverBoat)
+            if (!this.isTimeout)
+              this.createBoat();
           }
         }, 500);
       },
@@ -241,14 +265,19 @@
           }
         }, 500);
       },
-    checkItem(){
-      debugger
-      if(this.results.indexOf(this.result)>-1){
-        alert('答对了')
-      }else{
-        alert('打错了')
+      checkItem() {
+        var isCorrect=this.results.indexOf(parseInt(this.result)) > -1;
+        this.playAudio(isCorrect)
+        if (isCorrect) {
+          document.getElementById('divBoat'+this.result).remove();
+          document.getElementById('divSmash'+this.result).remove();
+          clearInterval(this.interverBoat);
+          this.result='0';
+          if(!this.isTimeout)
+          this.createBoat()
+        } else {
+        }
       }
-    }
 
     },
   }
