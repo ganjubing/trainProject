@@ -28,6 +28,10 @@ import AdditionIndex from '@/components/train/addition/index'
 import AdditionCaption from '@/components/train/addition/caption'
 import AdditionStorm from '@/components/train/addition/additionStorm'
 
+import MultiplicationIndex from '@/components/train/multiplication/index'
+import MultiplicationCaption from '@/components/train/multiplication/caption'
+import MultiplicationStorm from '@/components/train/multiplication/multiplicationStorm'
+
 Vue.use(Router)
 
 export default new Router({
@@ -216,8 +220,8 @@ export default new Router({
         isTitle: false,
       }
     },
-    
-    
+
+
     {
       path: '/train/addition',
       name: 'AdditionIndex',
@@ -242,6 +246,35 @@ export default new Router({
       component: AdditionStorm,
       meta: {
         title: '加法风暴',
+        isTitle: false,
+      }
+    },
+
+
+    {
+      path: '/train/multiplication',
+      name: 'MultiplicationIndex',
+      component: MultiplicationIndex,
+      meta: {
+        title: '6、乘法风暴',
+        isTitle: true,
+      },
+    },
+    {
+      path: '/train/multiplication/caption',
+      name: 'MultiplicationCaption',
+      component: MultiplicationCaption,
+      meta: {
+        title: '乘法风暴-说明',
+        isTitle: false,
+      }
+    },
+    {
+      path: '/train/multiplication/multiplicationStorm',
+      name: 'MultiplicationStorm',
+      component: MultiplicationStorm,
+      meta: {
+        title: '乘法风暴',
         isTitle: false,
       }
     },

@@ -62,6 +62,15 @@
         </div>
       </div>
     </div>
+    <img v-if="isReady" src="@/assets/addition/ready.png" style="width: 100%;height: 100%;" />
+    <div class="divResult" v-show="isFinish">
+      <span style="position: absolute;left: 52%;top:42.5%;color: #357dd3;font-size: 40px;font-weight: bolder;">1</span>
+      <span style="position: absolute;left: 52%;top: 50%;color:#357dd3;font-size: 40px;font-weight: bolder;">{{correctNumber}}</span>
+      <span style="position: absolute;left: 52%;top: 57%;color:#357dd3;font-size:40px;font-weight:bolder;">{{accuracy}}%</span>
+      <span style="position: absolute;left: 47%;top: 67%;color:#d7112f;font-size:60px;font-weight:700;">{{Math.round(correctNumber*10.5)}}分</span>
+      <img style="position: absolute;left: 44%;bottom:2%;width: 12.5%;height: 10%;" src="@/assets/btnContinu.png"
+        @click="readyGo" />
+    </div>
   </div>
 </template>
 
@@ -76,15 +85,18 @@
     randomNumBoth,
   } from '../../../utils/common.js'
   export default {
-    computed: {},
+    computed: {
+      accuracy: function() {
+        if(this.totalAnswerNumber===0)return 0;
+        return (this.correctNumber / this.totalAnswerNumber).toFixed(2) * 100;
+      }
+    },
     mounted() {
-      this.mainHeight = this.$refs.main.offsetHeight;
       /* this.boatHeight=this.$refs.boat[0].offsetHeight; */
-      /* this.smashImgH = this.$refs.smashImg.height; */
       /* console.log(this.smashImgH)
        this.mainHeight=parseInt(this.mainHeight)-parseInt(this.boatHeight); */
-      this.createBoat();
-      this.intervalTimer();
+      this.readyGo();
+      //this.intervalTimer();
       //this.startBoat();
       //his.create();
       /* this.boatLeft=randomNumBoth(0,91.6,1);
@@ -97,32 +109,38 @@
         surplusTime: 50, //当前剩余时长
         isTimeout: false, //是否时间已到
         isFinish: false, //是否答题结束
+        isReady: false, //是否准备开始
+        readyTime: 1000, //准备时长毫秒
         totalAnswerNumber: 0,
         correctNumber: 0,
         intervalTime: null,
-        interverBoat:null,
+        interverBoat: null,
         result: '0',
         mainHeight: 0,
         boatHeight: 0,
         marginTopH: 0,
-        smashImgH: 0,
         boatInterval: null,
         boatStatusImg: boatImg,
         boatSmashImg: boatSmash,
         isSmash: false,
-        downSpeed: 20, //下降速度 px
+        downSpeed: 2, //下降速度 px
+        downSpanTime: 100, //多久下降一次
         boatLeft: 0,
         results: [],
-        boatColors: ['#32c333', '#ff7aab', '#f2582a', '#fd7bad'],
+        boatColors: ['#32c333', '#ff7aab', '#f2582a', '#fd7bad'], //气球颜色，随机
       }
     },
     methods: {
       intervalTimer() {
         this.surplusTime = this.totalDuration;
         this.isFinish = false;
+        this.result='0';
+        this.results=[];
         this.totalAnswerNumber = 0;
         this.correctNumber = 0;
         this.isTimeout = false;
+        this.mainHeight = this.$refs.main.offsetHeight;
+        clearInterval(this.interverBoat)
         // 计时器为空，操作
         if (this.intervalTime != null) return;
         this.intervalTime = setInterval(() => {
@@ -130,6 +148,10 @@
             this.surplusTime = this.surplusTime - 1;
           } else {
             this.isTimeout = true;
+            this.isFinish = true;
+            clearInterval(this.intervalTime);
+            this.intervalTime=null;
+            this.removeBoat();
           }
         }, 1000)
       },
@@ -161,7 +183,7 @@
         divBoat.style.left = left + '%';
         divBoat.style.top = topH + '%';
         divBoat.style.backgroundColor = bg;
-        divBoat.id='divBoat'+result;
+        divBoat.id = 'divBoat' + result;
         var spans = document.createElement('span');
         divBoat.appendChild(spans);
         spans.innerText = num1 + '+' + num2;
@@ -170,7 +192,7 @@
         divSmash.style.marginLeft = left + '%';
         divSmash.style.backgroundColor = bg;
         divSmash.style.display = 'none';
-        divSmash.id='divSmash'+result;
+        divSmash.id = 'divSmash' + result;
         document.getElementById("divMain").appendChild(divBoat);
         document.getElementById("divMain").appendChild(divSmash);
         var boatH = document.getElementsByClassName("boat")[0].offsetHeight;
@@ -194,12 +216,20 @@
             if (!this.isTimeout)
               this.createBoat();
           }
-        }, 500);
+        }, this.downSpanTime);
       },
       removeSmash(dom) {
         setTimeout(() => {
           dom.remove();
         }, 500);
+      },
+      removeBoat(){
+        var boats=document.querySelector(".boat");
+        if(boats!=null) boats.remove()
+
+        /* boats.forEach(function(item){
+          item.remove();
+        }) */
       },
       create() {
         var that = this;
@@ -266,18 +296,35 @@
         }, 500);
       },
       checkItem() {
-        var isCorrect=this.results.indexOf(parseInt(this.result)) > -1;
+        var isCorrect = this.results.indexOf(parseInt(this.result)) > -1;
         this.playAudio(isCorrect)
+        this.totalAnswerNumber++;
         if (isCorrect) {
-          document.getElementById('divBoat'+this.result).remove();
-          document.getElementById('divSmash'+this.result).remove();
+          this.correctNumber++;
+          document.getElementById('divBoat' + this.result).remove();
+          document.getElementById('divSmash' + this.result).remove();
           clearInterval(this.interverBoat);
-          this.result='0';
-          if(!this.isTimeout)
-          this.createBoat()
+
+          if (!this.isTimeout)
+            this.createBoat()
+          else
+            this.isFinish = true;
         } else {
+
         }
-      }
+        this.result = '0';
+      },
+      readyGo() {
+        this.removeBoat();
+        this.isReady = true;
+        this.isFinish = false;
+        this.isTimeout = false;
+        setTimeout(() => {
+          this.isReady = false;
+          this.intervalTimer();
+          this.createBoat();
+        }, this.readyTime);
+      },
 
     },
   }
@@ -320,7 +367,7 @@
     top: 0px;
     /* left:91.6%; */
     width: 8.4%;
-    height: 12.4%;
+    height: 14%;
     background-image: url(../../../assets/addition/boat.png);
     background-size: cover;
   }
@@ -328,7 +375,7 @@
   .boatSmash {
     width: 15%;
     height: 5%;
-    margin-top: 64%;
+    margin-top: 60%;
     background-image: url(../../../assets/addition/boatSmash1.png);
     background-size: cover;
   }
@@ -339,5 +386,18 @@
     position: absolute;
     top: 20%;
     left: 25%;
+  }
+
+  .divResult {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-image: url(../../../assets/addition/result.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center, center;
+    z-index: 9999;
   }
 </style>
