@@ -32,6 +32,10 @@ import MultiplicationIndex from '@/components/train/multiplication/index'
 import MultiplicationCaption from '@/components/train/multiplication/caption'
 import MultiplicationStorm from '@/components/train/multiplication/multiplicationStorm'
 
+import SubtractionIndex from '@/components/train/subtraction/index'
+import SubtractionCaption from '@/components/train/subtraction/caption'
+import SubtractionStorm from '@/components/train/subtraction/subtractionStorm'
+
 Vue.use(Router)
 
 export default new Router({
@@ -275,6 +279,34 @@ export default new Router({
       component: MultiplicationStorm,
       meta: {
         title: '乘法风暴',
+        isTitle: false,
+      }
+    },
+    
+    {
+      path: '/train/subtraction',
+      name: 'SubtractionIndex',
+      component: SubtractionIndex,
+      meta: {
+        title: '7、减法风暴',
+        isTitle: true,
+      },
+    },
+    {
+      path: '/train/subtraction/caption',
+      name: 'SubtractionCaption',
+      component: SubtractionCaption,
+      meta: {
+        title: '减法风暴-说明',
+        isTitle: false,
+      }
+    },
+    {
+      path: '/train/subtraction/subtractionStorm',
+      name: 'SubtractionStorm',
+      component: SubtractionStorm,
+      meta: {
+        title: '减法风暴',
         isTitle: false,
       }
     },

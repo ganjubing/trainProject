@@ -1,15 +1,7 @@
 <template>
-  <div class="addition">
+  <div class="subtraction">
     <span class="surplusTime">{{surplusTime}}</span>
     <div id="divMain" ref="main" style="position: absolute;width:64%;height:88%;left:4%;top:5%;">
-      <!-- <div v-if="!isSmash" ref="boat" :style="{'width':'8.4%','height':' 12.4%','display':'inline-block','margin-top':marginTopH+'px'}">
-        <img :src="boatStatusImg" style="width: 100%;height: 100%;background-color: #00FFFF;" />
-
-      </div> -->
-      <!-- <div class="boat" style="background-color: #00FFFF;">
-        <span style="font-size:18px;font-weight:bold;position: absolute;top:20%;left:35%;">1+1</span>
-      </div> -->
-      <!-- <img ref="smashImg" v-show="isSmash" :src="boatSmashImg" :style="{'width':'20%','height':'7%','background-color':'#00FFFF','margin-top':'62%'}" /> -->
     </div>
     <div class="calc" style="">
       <div style="width: 75%;height: 18.8%;margin: 16.5% 11% 2.5% 11%;">
@@ -19,50 +11,50 @@
         <div style="width: 100%;height: 50%;">
           <div style="width:75%;height: 100%;float: left;">
             <div @click="inputNumber(7)" style="width: 31%;height: 45%;float: left;margin-right:3.5%;">
-              <img src="../../../assets/addition/num7.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num7.png" style="height: 100%;width: 100%;" />
             </div>
             <div @click="inputNumber(8)" style="width: 31%;height: 45%;float: left;margin-right: 3.5%;">
-              <img src="../../../assets/addition/num8.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num8.png" style="height: 100%;width: 100%;" />
             </div>
             <div @click="inputNumber(9)" style="width: 31%;height: 45%;float: left;margin-right: 0%">
-              <img src="../../../assets/addition/num9.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num9.png" style="height: 100%;width: 100%;" />
             </div>
             <div @click="inputNumber(4)" style="width: 31%;height: 45%;float: left;margin:4% 3.5% 0% 0%">
-              <img src="../../../assets/addition/num4.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num4.png" style="height: 100%;width: 100%;" />
             </div>
             <div @click="inputNumber(5)" style="width: 31%;height: 45%; solid;float: left;margin:4% 3.5% 0 0">
-              <img src="../../../assets/addition/num5.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num5.png" style="height: 100%;width: 100%;" />
             </div>
             <div @click="inputNumber(6)" style="width: 31%;height: 45%; solid;float: left;margin-top: 4%">
-              <img src="../../../assets/addition/num6.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num6.png" style="height: 100%;width: 100%;" />
             </div>
           </div>
           <div @click="doClear" style="width: 23%;height: 97%;float: left;margin-left:2% ;">
-            <img src="../../../assets/addition/btnClear.png" style="height: 100%;width: 100%;" />
+            <img src="@/assets/subtraction/btnClear.png" style="height: 100%;width: 100%;" />
           </div>
         </div>
         <div style="width:100%;height:49%;margin-top:1% ;">
           <div style="width:75%;height: 100%;float: left;z-index: 9999;position: relative;">
             <div @click="inputNumber(1)" style="width: 31%;height: 45%;float: left;margin-right:3.5%;">
-              <img src="../../../assets/addition/num1.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num1.png" style="height: 100%;width: 100%;" />
             </div>
             <div @click="inputNumber(2)" style="width: 31%;height: 45%;float: left;margin-right: 3.5%;">
-              <img src="../../../assets/addition/num2.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num2.png" style="height: 100%;width: 100%;" />
             </div>
             <div @click="inputNumber(3)" style="width: 31%;height: 45%;float: left;margin-right: 0%;z-index: 9999;">
-              <img src="../../../assets/addition/num3.png" style="height: 100%;width: 100%;z-index: 9999;" />
+              <img src="@/assets/subtraction/num3.png" style="height: 100%;width: 100%;z-index: 9999;" />
             </div>
             <div @click="inputNumber(0)" style="width:82%;height: 45%;float: left;margin:4% 3.5% 0% 0%">
-              <img src="../../../assets/addition/num0.png" style="height: 100%;width: 100%;" />
+              <img src="@/assets/subtraction/num0.png" style="height: 100%;width: 100%;" />
             </div>
           </div>
           <div @click="checkItem" style="width: 26%;height: 100%;float: left;margin-left:2%;">
-            <img src="../../../assets/addition/btnConfirm.png" style="height: 27%;width:28%; position: absolute;right:14%;bottom:11%;z-index: 1;" />
+            <img src="@/assets/subtraction/btnConfirm.png" style="height: 27%;width:28%; position: absolute;right:14%;bottom:11%;z-index: 1;" />
           </div>
         </div>
       </div>
     </div>
-    <img v-if="isReady" src="@/assets/addition/ready.png" style="width: 100%;height: 100%;" />
+    <img v-if="isReady" src="@/assets/subtraction/ready.png" style="width: 100%;height: 100%;" />
     <div class="divResult" v-show="isFinish">
       <span style="position: absolute;left: 52%;top:42.5%;color: #357dd3;font-size: 40px;font-weight: bolder;">1</span>
       <span style="position: absolute;left: 52%;top: 50%;color:#357dd3;font-size: 40px;font-weight: bolder;">{{correctNumber}}</span>
@@ -76,14 +68,14 @@
 
 <script>
   import Vue from 'vue'
-  import boatImg from "@/assets/addition/boat.png"
-  import boatSmash from "@/assets/addition/boatSmash1.png"
+  /* import boatImg from "@/assets/subtraction/boat.png"*/
+  import colors from "@/assets/subtraction/clors.png"
   import {
     randonArr,
     randomLimit,
     getRandomArr,
     randomNumBoth,
-  } from '../../../utils/common.js'
+  } from '@/utils/common.js'
   export default {
     computed: {
       accuracy: function() {
@@ -120,14 +112,16 @@
         boatHeight: 0,
         marginTopH: 0,
         boatInterval: null,
-        boatStatusImg: boatImg,
-        boatSmashImg: boatSmash,
+        /* boatStatusImg: boatImg,
+        boatSmashImg: boatSmash, */
         isSmash: false,
         downSpeed: 2, //下降速度 px
         downSpanTime: 100, //多久下降一次
         boatLeft: 0,
         results: [],
-        boatColors: ['#32c333', '#ff7aab', '#f2582a', '#fd7bad'], //气球颜色，随机
+        imgs:require("@/assets/subtraction/clors.png"),
+        boatColors: ['boat_colors', 'boat_blue', 'boat_yellow'], //气球颜色，随机
+        currentClass:'',
       }
     },
     methods: {
@@ -172,25 +166,35 @@
       createBoat() {
         var topH = 0;
         var left = randomNumBoth(0, 90, 1)[0];
-        var bg = getRandomArr(this.boatColors, 1)[0];
-        var nums = randomNumBoth(1, 30, 2);
+        var domClassName= getRandomArr(this.boatColors, 1)[0];
+        //is.currentClass='boat '+domClassName;
+        var nums = randomNumBoth(1,15, 2);
         var num1 = nums[0];
         var num2 = nums[1];
-        var result = num1 + num2;
+
+        var maxNum=0;
+        var minNum=0;
+        if(num1>=num2){
+          maxNum=num1;
+          minNum=num2;
+        }else{
+          maxNum=num2;
+          minNum=num1;
+        }
+        var result =maxNum-minNum;
         this.results.push(result);
         var divBoat = document.createElement('div');
-        divBoat.className = "boat";
+        divBoat.className ='boat '+domClassName;
         divBoat.style.left = left + '%';
         divBoat.style.top = topH + '%';
-        divBoat.style.backgroundColor = bg;
         divBoat.id = 'divBoat' + result;
         var spans = document.createElement('span');
         divBoat.appendChild(spans);
-        spans.innerText = num1 + '+' + num2;
+        spans.innerText = maxNum + '-' + minNum;
         var divSmash = document.createElement('div');
         divSmash.className = "boatSmash";
         divSmash.style.marginLeft = left + '%';
-        divSmash.style.backgroundColor = bg;
+        divSmash.style.backgroundColor = '#00FFFF';
         divSmash.style.display = 'none';
         divSmash.id = 'divSmash' + result;
         document.getElementById("divMain").appendChild(divBoat);
@@ -231,70 +235,6 @@
           item.remove();
         }) */
       },
-      create() {
-        var that = this;
-        var left = randomNumBoth(0, 91.6, 1)[0];
-        var bg = getRandomArr(this.boatColors, 1)[0];
-        var MyComponent = Vue.extend({
-          template: "<div class='boat' v-bind:style='{marin-top:marginTopH}'></div>",
-          methods: {
-            selectResult: function() {
-              var interverBoat = setInterval(() => {
-                var currentH = that.marginTopH + 20;
-                if (currentH < that.mainHeight) {
-                  that.marginTopH = currentH;
-                } else {
-                  that.isSmash = true;
-                  //this.boatStatusImg=boatSmash;
-                  clearInterval(interverBoat)
-                }
-                this.baseStyles = Object.assign({}, this.baseStyles, {
-                  marginTop: that.marginTopH
-                })
-              }, 500);
-
-
-            }
-          },
-          mounted() {
-            this.selectResult();
-
-          },
-          data() {
-            return {
-              marginTopH: that.marginTopH + '%',
-              baseStyles: {
-                'margin-top': that.marginTopH + '%',
-                backgroundColor: bg,
-                left: left + '%',
-              },
-            }
-          },
-          watch: {
-            baseStyles: {
-              deep: true,
-              handler: function(val, oldval) {
-                console.log(val)
-              },
-            }
-          }
-        });
-        var component = new MyComponent().$mount();
-        document.getElementById('divMain').appendChild(component.$el);
-
-      },
-      startBoat() {
-        this.boatInterval = setInterval(() => {
-          var currentH = this.marginTopH + 20;
-          if (currentH < this.mainHeight) {
-            this.marginTopH = currentH;
-          } else {
-            this.isSmash = true;
-            //this.boatStatusImg=boatSmash;
-            clearInterval(this.boatInterval)
-          }
-        }, 500);
-      },
       checkItem() {
         var isCorrect = this.results.indexOf(parseInt(this.result)) > -1;
         this.playAudio(isCorrect)
@@ -331,19 +271,19 @@
 </script>
 
 <style>
-  .addition {
+  .subtraction {
     width: 100%;
     height: 100vh;
     /* position: fixed; */
     position: relative;
-    background-image: url(../../../assets/addition/bg.jpg);
+    background-image: url(../../../assets/subtraction/bg.jpg);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
     -moz-background-size: 100% 100%;
   }
 
-  .addition .surplusTime {
+  .subtraction .surplusTime {
     position: absolute;
     right: 15%;
     top: 0%;
@@ -357,18 +297,36 @@
     height: 55.9%;
     right: 6%;
     bottom: 22%;
-    background-image: url(../../../assets/addition/calculator.png);
+    background-image: url(../../../assets/subtraction/calculator.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
   }
 
-  .boat {
+  .boat_colors {
     position: absolute;
     top: 0px;
     /* left:91.6%; */
-    width: 8.4%;
-    height: 14%;
-    background-image: url(../../../assets/addition/boat.png);
+    width: 5.5%;
+    height: 10%;
+   background-image: url(../../../assets/subtraction/clors.png);
+    background-size: cover;
+  }
+  .boat_blue {
+    position: absolute;
+    top: 0px;
+    /* left:91.6%; */
+    width: 5%;
+    height: 10%;
+   background-image: url(../../../assets/subtraction/blue.png);
+    background-size: cover;
+  }
+  .boat_yellow {
+    position: absolute;
+    top: 0px;
+    /* left:91.6%; */
+    width: 5.5%;
+    height: 10%;
+   background-image: url(../../../assets/subtraction/yellow.png);
     background-size: cover;
   }
 
@@ -376,7 +334,7 @@
     width: 15%;
     height: 5%;
     margin-top: 60%;
-    background-image: url(../../../assets/addition/boatSmash1.png);
+    background-image: url(../../../assets/subtraction/boatSmash1.png);
     background-size: cover;
   }
 
@@ -384,8 +342,8 @@
     font-size: 18px;
     font-weight: bold;
     position: absolute;
-    top: 20%;
-    left: 25%;
+    top: 28%;
+    left: 20%;
   }
 
   .divResult {
@@ -394,7 +352,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    background-image: url(../../../assets/addition/result.png);
+    background-image: url(../../../assets/subtraction/result.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center, center;
