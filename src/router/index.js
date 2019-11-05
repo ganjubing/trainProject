@@ -36,6 +36,10 @@ import SubtractionIndex from '@/components/train/subtraction/index'
 import SubtractionCaption from '@/components/train/subtraction/caption'
 import SubtractionStorm from '@/components/train/subtraction/subtractionStorm'
 
+import MatchingIndex from '@/components/train/matching/index'
+import MatchingCaption from '@/components/train/matching/caption'
+import NameMatching from '@/components/train/matching/nameMatching'
+
 Vue.use(Router)
 
 export default new Router({
@@ -282,7 +286,7 @@ export default new Router({
         isTitle: false,
       }
     },
-    
+
     {
       path: '/train/subtraction',
       name: 'SubtractionIndex',
@@ -307,6 +311,34 @@ export default new Router({
       component: SubtractionStorm,
       meta: {
         title: '减法风暴',
+        isTitle: false,
+      }
+    },
+    
+    {
+      path: '/train/matching',
+      name: 'MatchingIndex',
+      component: MatchingIndex,
+      meta: {
+        title: '8、姓名配对',
+        isTitle: true,
+      },
+    },
+    {
+      path: '/train/matching/caption',
+      name: 'MatchingCaption',
+      component: MatchingCaption,
+      meta: {
+        title: '姓名配对-说明',
+        isTitle: false,
+      }
+    },
+    {
+      path: '/train/matching/nameMatching',
+      name: 'NameMatching',
+      component: NameMatching,
+      meta: {
+        title: '姓名匹配',
         isTitle: false,
       }
     },

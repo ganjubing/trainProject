@@ -344,6 +344,7 @@
     position: absolute;
     top: 28%;
     left: 20%;
+    margin: 0 auto;
   }
 
   .divResult {
