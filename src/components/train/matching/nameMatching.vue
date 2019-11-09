@@ -1,17 +1,17 @@
 <template>
   <div class="matching">
     <span class="surplusTime">{{surplusTime}}</span>
-    <div v-if="ready">
+    <div v-if="ready" style="z-index: 9999;position:absolute">
       <img src="@/assets/matching/personInfo.png" style="width: 100%;height: 100%;" />
-      <div style="width: 20.5%;height: 20%;position: absolute;top:39.5%;left: 41.5%;">
+      <div style="width: 20.5%;height: 20%;position: absolute;top:32%;left: 41.5%;">
         <div style="width: 50%;float: left;height: 100%;position: relative;">
-          <img src="@/assets/matching/images/wuyanzu.jpg" style="width: 60%;height: 60%;position: absolute;top:50%;left: 50%;margin-left: -30%;margin-top: -30%;border-radius:10px;" />
+          <img :src="currentPerson.img" style="width: 60%;height: 60%;position: absolute;top:50%;left: 50%;margin-left: -30%;margin-top: -30%;border-radius:10px;" />
         </div>
         <div style="width: 50%;float: left;height: 100%;">
-          <span style="font-size: 30px;color: white;text-align:center;display:block;position: relative;top:50%;transform:translateY(-50%);">吴彦祖</span>
+          <span style="font-size: 30px;color: white;text-align:center;display:block;position: relative;top:50%;transform:translateY(-50%);">{{currentPerson.nameCN}}</span>
         </div>
       </div>
-      <img src='@/assets/btnContinu.png' style="position: absolute;left: 45%;bottom: 20%;" />
+      <img src='@/assets/btnContinu.png' style="position: absolute;left: 45%;bottom: 35%;" @click="continu" />
     </div>
     <div style="border: 1px solid #00FF00; width: 73%;height:68.5%;position: absolute;left: 14.4%;top:14%;">
       <div class="divItem" v-for="item in 32" style="">
@@ -22,7 +22,9 @@
 </template>
 
 <script>
-  import {userList} from '@/data/matching_users.js'
+  import {
+    userList
+  } from '@/data/matching_users.js'
   import {
     randonArr,
     randomLimit,
@@ -34,21 +36,38 @@
       return {
         surplusTime: 299,
         ready: false,
-        users:[],
-        currentIndex:0,
-        currentPerson:[],
+        users: [],
+        currentIndex: 0,
+        currentPersonList: [],
+        currentPerson: {},
+        isStart:false,
       }
     },
     mounted() {
-      this.users=userList();
-      console.log(this.users)
+      this.users = userList();
+      this.getCurrentPerson(true);
     },
-    methods:{
-      getCurrentPerson(isFirst){
-        this.currentPerson.push(this.users[this.currentIndex]);
-        if(isFirst){
-          this.currentPerson.push(this.users[this.currentIndex+1]);
+    methods: {
+      getCurrentPerson(isFirst) {
+        this.currentPersonList.push(this.users[this.currentIndex]);
+        this.currentPerson = this.users[this.currentIndex];
+        this.ready = true;
+        if (isFirst) {
+          this.currentPersonList.push(this.users[this.currentIndex + 1]);
         }
+      },
+      continu() {
+        if (this.isStart) {
+          this.ready = false;
+        } else {
+          if (this.currentPersonList.length == 2) { //显示下一个人
+            this.currentPerson = this.currentPersonList[1];
+            this.isStart = true;
+          } else if (this.currentPersonList.length == 1) { //开始
+            this.ready = false;
+          }
+        }
+
       },
     },
   }
@@ -83,6 +102,6 @@
     width: 9%;
     background-image: url(../../../assets/matching/person.png);
     background-repeat: no-repeat;
-    background-size:100% 100%;
+    background-size: 100% 100%;
   }
 </style>
