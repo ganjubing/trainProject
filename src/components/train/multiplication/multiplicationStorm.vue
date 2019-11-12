@@ -3,9 +3,9 @@
     <span class="surplusTime">{{surplusTime}}</span>
     <div id="divMain" ref="main" style="position: absolute;width:64%;height:88%;left:4%;top:5%;">
     </div>
-    <div class="calc" style="">
+    <div class="multicalc" style="">
       <div style="width: 75%;height: 18.8%;margin: 16.5% 11% 2.5% 11%;">
-        <span style="font-size:70px;font-weight: bolder;float: right;margin-right:2%;margin-top:0px;">{{result}}</span>
+        <span style="font-size:40px;font-weight: bolder;float: right;margin-right:2%;margin-top:0px;">{{result}}</span>
       </div>
       <div style="width: 75.5%;height: 56.5%;margin: 0% 10.5%;">
         <div style="width: 100%;height: 50%;">
@@ -97,8 +97,8 @@
     },
     data() {
       return {
-        totalDuration: 50, //计时器总时长(秒)
-        surplusTime: 50, //当前剩余时长
+        totalDuration: 200, //计时器总时长(秒)
+        surplusTime: 200, //当前剩余时长
         isTimeout: false, //是否时间已到
         isFinish: false, //是否答题结束
         isReady: false, //是否准备开始
@@ -156,7 +156,7 @@
         }
       },
       doClear() {
-        this.result = this.result.substring(0, this.result.length - 1)
+        this.result = this.result.toString().substring(0, this.result.length - 1)
         if (this.result.length <= 0) {
           this.result = "0";
         }
@@ -171,7 +171,7 @@
         var result = num1 * num2;
         this.results.push(result);
         var divBoat = document.createElement('div');
-        divBoat.className = "boat";
+        divBoat.className = "multiboat";
         divBoat.style.left = left + '%';
         divBoat.style.top = topH + '%';
         divBoat.style.backgroundColor = bg;
@@ -180,17 +180,17 @@
         divBoat.appendChild(spans);
         spans.innerText = num1 + 'x' + num2;
         var divSmash = document.createElement('div');
-        divSmash.className = "boatSmash";
+        divSmash.className = "multiboatSmash";
         divSmash.style.marginLeft = left + '%';
         divSmash.style.backgroundColor = bg;
         divSmash.style.display = 'none';
         divSmash.id = 'divSmash' + result;
         document.getElementById("divMain").appendChild(divBoat);
         document.getElementById("divMain").appendChild(divSmash);
-        var boatH = document.getElementsByClassName("boat")[0].offsetHeight;
+        var boatH = document.getElementsByClassName("multiboat")[0].offsetHeight;
         this.interverBoat = setInterval(() => {
           var currentH = topH + this.downSpeed;
-          if (currentH < (this.mainHeight - boatH)) {
+          if (currentH+20 < (this.mainHeight - boatH)) {
             topH = currentH;
             divBoat.style.top = topH + 'px';
           } else {
@@ -216,7 +216,7 @@
         }, 500);
       },
       removeBoat(){
-        var boats=document.querySelector(".boat");
+        var boats=document.querySelector(".multiboat");
         if(boats!=null) boats.remove()
 
         /* boats.forEach(function(item){
@@ -307,6 +307,10 @@
       },
 
     },
+    beforeDestroy() {
+        clearInterval(this.interverBoat);
+        this.interverBoat = null;
+    }
   }
 </script>
 
@@ -325,13 +329,13 @@
 
   .multiplication .surplusTime {
     position: absolute;
-    right: 15%;
+    right: 14%;
     top: 0%;
     font-weight: bolder;
-    font-size: 30px;
+    font-size: 25px;
   }
 
-  .calc {
+  .multicalc {
     position: absolute;
     width: 20.4%;
     height: 55.9%;
@@ -342,17 +346,18 @@
     background-size: 100% 100%;
   }
 
-  .boat {
+  .multiboat {
     position: absolute;
+    text-align: center;
     top: 0px;
     /* left:91.6%; */
     width: 5%;
-    height: 10%;
+    height: 11%;
     background-image: url(../../../assets/multiplication/balloon.png);
     background-size: cover;
   }
 
-  .boatSmash {
+  .multiboatSmash {
     width: 15%;
     height: 5%;
     margin-top: 60%;
@@ -360,12 +365,12 @@
     background-size: cover;
   }
 
-  .boat span {
-    font-size: 18px;
+  .multiboat span {
+    font-size: 14px;
     font-weight: bold;
     position: absolute;
     top: 28%;
-    left: 18%;
+    left: 15%;
   }
 
   .divResult {

@@ -9,7 +9,7 @@ export const userList = () => {
       nameCN: '邓超',
       img: require('@/assets/matching/images/dengchao.jpg')
     },
-    {
+     {
       nameEN: 'guofucheng ',
       nameCN: '郭富城',
       img: require('@/assets/matching/images/guofucheng.jpg')

@@ -3,9 +3,9 @@
     <span class="surplusTime">{{surplusTime}}</span>
     <div id="divMain" ref="main" style="position: absolute;width:64%;height:88%;left:4%;top:5%;">
     </div>
-    <div class="calc" style="">
+    <div class="subcalc" style="">
       <div style="width: 75%;height: 18.8%;margin: 16.5% 11% 2.5% 11%;">
-        <span style="font-size:70px;font-weight: bolder;float: right;margin-right:2%;margin-top:0px;">{{result}}</span>
+        <span style="font-size:40px;font-weight: bolder;float: right;margin-right:2%;padding-top:0px;">{{result}}</span>
       </div>
       <div style="width: 75.5%;height: 56.5%;margin: 0% 10.5%;">
         <div style="width: 100%;height: 50%;">
@@ -79,7 +79,7 @@
   export default {
     computed: {
       accuracy: function() {
-        if(this.totalAnswerNumber===0)return 0;
+        if (this.totalAnswerNumber === 0) return 0;
         return (this.correctNumber / this.totalAnswerNumber).toFixed(2) * 100;
       }
     },
@@ -97,8 +97,8 @@
     },
     data() {
       return {
-        totalDuration: 50, //计时器总时长(秒)
-        surplusTime: 50, //当前剩余时长
+        totalDuration: 200, //计时器总时长(秒)
+        surplusTime: 200, //当前剩余时长
         isTimeout: false, //是否时间已到
         isFinish: false, //是否答题结束
         isReady: false, //是否准备开始
@@ -119,17 +119,17 @@
         downSpanTime: 100, //多久下降一次
         boatLeft: 0,
         results: [],
-        imgs:require("@/assets/subtraction/clors.png"),
+        imgs: require("@/assets/subtraction/clors.png"),
         boatColors: ['boat_colors', 'boat_blue', 'boat_yellow'], //气球颜色，随机
-        currentClass:'',
+        currentClass: '',
       }
     },
     methods: {
       intervalTimer() {
         this.surplusTime = this.totalDuration;
         this.isFinish = false;
-        this.result='0';
-        this.results=[];
+        this.result = '0';
+        this.results = [];
         this.totalAnswerNumber = 0;
         this.correctNumber = 0;
         this.isTimeout = false;
@@ -144,7 +144,7 @@
             this.isTimeout = true;
             this.isFinish = true;
             clearInterval(this.intervalTime);
-            this.intervalTime=null;
+            this.intervalTime = null;
             this.removeBoat();
           }
         }, 1000)
@@ -158,7 +158,7 @@
         }
       },
       doClear() {
-        this.result = this.result.substring(0, this.result.length - 1)
+        this.result = this.result.toString().substring(0, this.result.length - 1)
         if (this.result.length <= 0) {
           this.result = "0";
         }
@@ -166,25 +166,25 @@
       createBoat() {
         var topH = 0;
         var left = randomNumBoth(0, 90, 1)[0];
-        var domClassName= getRandomArr(this.boatColors, 1)[0];
+        var domClassName = getRandomArr(this.boatColors, 1)[0];
         //is.currentClass='boat '+domClassName;
-        var nums = randomNumBoth(1,15, 2);
+        var nums = randomNumBoth(1, 15, 2);
         var num1 = nums[0];
         var num2 = nums[1];
 
-        var maxNum=0;
-        var minNum=0;
-        if(num1>=num2){
-          maxNum=num1;
-          minNum=num2;
-        }else{
-          maxNum=num2;
-          minNum=num1;
+        var maxNum = 0;
+        var minNum = 0;
+        if (num1 >= num2) {
+          maxNum = num1;
+          minNum = num2;
+        } else {
+          maxNum = num2;
+          minNum = num1;
         }
-        var result =maxNum-minNum;
+        var result = maxNum - minNum;
         this.results.push(result);
         var divBoat = document.createElement('div');
-        divBoat.className ='boat '+domClassName;
+        divBoat.className = "subboat " + domClassName;
         divBoat.style.left = left + '%';
         divBoat.style.top = topH + '%';
         divBoat.id = 'divBoat' + result;
@@ -192,17 +192,17 @@
         divBoat.appendChild(spans);
         spans.innerText = maxNum + '-' + minNum;
         var divSmash = document.createElement('div');
-        divSmash.className = "boatSmash";
+        divSmash.className = "subboatSmash";
         divSmash.style.marginLeft = left + '%';
         divSmash.style.backgroundColor = '#00FFFF';
         divSmash.style.display = 'none';
         divSmash.id = 'divSmash' + result;
         document.getElementById("divMain").appendChild(divBoat);
         document.getElementById("divMain").appendChild(divSmash);
-        var boatH = document.getElementsByClassName("boat")[0].offsetHeight;
+        var boatH = document.getElementsByClassName(domClassName)[0].offsetHeight;
         this.interverBoat = setInterval(() => {
           var currentH = topH + this.downSpeed;
-          if (currentH < (this.mainHeight - boatH)) {
+          if (currentH+20 < (this.mainHeight - boatH)) {
             topH = currentH;
             divBoat.style.top = topH + 'px';
           } else {
@@ -227,9 +227,9 @@
           dom.remove();
         }, 500);
       },
-      removeBoat(){
-        var boats=document.querySelector(".boat");
-        if(boats!=null) boats.remove()
+      removeBoat() {
+        var boats = document.querySelector(".subboat");
+        if (boats != null) boats.remove()
 
         /* boats.forEach(function(item){
           item.remove();
@@ -267,6 +267,11 @@
       },
 
     },
+    beforeDestroy() {
+      this.removeBoat();
+      clearInterval(this.interverBoat);
+      this.interverBoat = null;
+    }
   }
 </script>
 
@@ -285,13 +290,13 @@
 
   .subtraction .surplusTime {
     position: absolute;
-    right: 15%;
+    right: 14%;
     top: 0%;
     font-weight: bolder;
-    font-size: 30px;
+    font-size: 25px;
   }
 
-  .calc {
+  .subcalc {
     position: absolute;
     width: 20.4%;
     height: 55.9%;
@@ -306,31 +311,33 @@
     position: absolute;
     top: 0px;
     /* left:91.6%; */
-    width: 5.5%;
-    height: 10%;
-   background-image: url(../../../assets/subtraction/clors.png);
+    width: 6%;
+    height: 12%;
+    background-image: url(../../../assets/subtraction/clors.png);
     background-size: cover;
   }
+
   .boat_blue {
     position: absolute;
     top: 0px;
     /* left:91.6%; */
-    width: 5%;
-    height: 10%;
-   background-image: url(../../../assets/subtraction/blue.png);
+    width: 6%;
+    height: 12%;
+    background-image: url(../../../assets/subtraction/blue.png);
     background-size: cover;
   }
+
   .boat_yellow {
     position: absolute;
     top: 0px;
     /* left:91.6%; */
-    width: 5.5%;
-    height: 10%;
-   background-image: url(../../../assets/subtraction/yellow.png);
+    width: 6%;
+    height: 12%;
+    background-image: url(../../../assets/subtraction/yellow.png);
     background-size: cover;
   }
 
-  .boatSmash {
+  .subboatSmash {
     width: 15%;
     height: 5%;
     margin-top: 60%;
@@ -338,12 +345,16 @@
     background-size: cover;
   }
 
-  .boat span {
-    font-size: 18px;
+  .subboat {
+    text-align: center;
+  }
+
+  .subboat span {
+    font-size: 14px;
     font-weight: bold;
     position: absolute;
     top: 28%;
-    left: 20%;
+    left: 18%;
     margin: 0 auto;
   }
 
