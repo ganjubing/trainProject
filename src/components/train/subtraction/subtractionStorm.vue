@@ -5,7 +5,7 @@
     </div>
     <div class="subcalc" style="">
       <div style="width: 75%;height: 18.8%;margin: 16.5% 11% 2.5% 11%;">
-        <span style="font-size:40px;font-weight: bolder;float: right;margin-right:2%;padding-top:0px;">{{result}}</span>
+        <span style="font-size:40px;font-weight: bolder;float: right;margin-right:2%;position: relative;top:50%;transform:translateY(-50%);">{{result}}</span>
       </div>
       <div style="width: 75.5%;height: 56.5%;margin: 0% 10.5%;">
         <div style="width: 100%;height: 50%;">
@@ -311,7 +311,7 @@
     position: absolute;
     top: 0px;
     /* left:91.6%; */
-    width: 6%;
+    width: 6.5%;
     height: 12%;
     background-image: url(../../../assets/subtraction/clors.png);
     background-size: cover;
@@ -321,7 +321,7 @@
     position: absolute;
     top: 0px;
     /* left:91.6%; */
-    width: 6%;
+    width: 6.5%;
     height: 12%;
     background-image: url(../../../assets/subtraction/blue.png);
     background-size: cover;
@@ -331,7 +331,7 @@
     position: absolute;
     top: 0px;
     /* left:91.6%; */
-    width: 6%;
+    width: 6.5%;
     height: 12%;
     background-image: url(../../../assets/subtraction/yellow.png);
     background-size: cover;
