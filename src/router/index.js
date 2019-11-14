@@ -40,6 +40,10 @@ import MatchingIndex from '@/components/train/matching/index'
 import MatchingCaption from '@/components/train/matching/caption'
 import NameMatching from '@/components/train/matching/nameMatching'
 
+import RuleIndex from '@/components/train/classification/index'
+import RuleCaption from '@/components/train/classification/caption'
+import RuleClassification from '@/components/train/classification/ruleClassifiction'
+
 Vue.use(Router)
 
 export default new Router({
@@ -314,7 +318,7 @@ export default new Router({
         isTitle: false,
       }
     },
-    
+
     {
       path: '/train/matching',
       name: 'MatchingIndex',
@@ -342,5 +346,33 @@ export default new Router({
         isTitle: false,
       }
     },
+
+  {
+    path: '/train/classification',
+    name: 'RuleIndex',
+    component: RuleIndex,
+    meta: {
+      title: '10、规则分类',
+      isTitle: true,
+    },
+  },
+  {
+    path: '/train/classification/caption',
+    name: 'RuleCaption',
+    component: RuleCaption,
+    meta: {
+      title: '规则分类-说明',
+      isTitle: false,
+    }
+  },
+  {
+    path: '/train/classification/ruleClassifiction',
+    name: 'RuleClassification',
+    component: RuleClassification,
+    meta: {
+      title: '规则分类',
+      isTitle: false,
+    }
+  },
   ]
 })
