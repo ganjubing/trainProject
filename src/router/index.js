@@ -44,6 +44,8 @@ import RuleIndex from '@/components/train/classification/index'
 import RuleCaption from '@/components/train/classification/caption'
 import RuleClassification from '@/components/train/classification/ruleClassifiction'
 
+import routeerPart1 from './routerPart1'
+
 Vue.use(Router)
 
 export default new Router({
@@ -374,5 +376,6 @@ export default new Router({
       isTitle: false,
     }
   },
+  ...routeerPart1
   ]
 })

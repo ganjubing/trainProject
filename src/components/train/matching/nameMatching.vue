@@ -16,9 +16,9 @@
     </div>
     <div style="width: 73%;height:68.5%;position: absolute;left: 14.4%;top:14%;">
       <div class="divItem" v-for="item in cellNumber" style="">
-        <div v-if="cellImagIndex.indexOf(item)>-1&&arrImg.cellIndex===item" v-for="(arrImg,inex) in headers" @click="checkImg(arrImg)" style="position: relative;">
-          <img v-if="arrImg.isChecked" :src="arrImg.img" style="width: 100%;height: 100%;border-radius:10px;" />
-          <img v-if="arrImg.isChecked===false" src="@/assets/matching/person.png" style="width: 100%;height: 100%;border-radius:10px;" />
+        <div v-if="cellImagIndex.indexOf(item)>-1&&arrImg.cellIndex===item" v-for="(arrImg,inex) in headers" @click="checkImg(arrImg)" style="position: relative;width: 100%;height: 100%;">
+          <img v-if="arrImg.isChecked" :src="arrImg.img" style="width: 100%;height: 100%;" />
+          <img v-if="arrImg.isChecked===false" src="@/assets/matching/person.png" style="width: 100%;height: 100%;" />
           <!-- <img v-if="arrImg.isChecked" src="@/assets/correct.png" style="position: absolute;left:50%;top:45%;width:50%;height: 50%;" /> -->
         </div>
 
@@ -26,7 +26,7 @@
           v-for="(arrName,inex) in names" v-if="cellNameIndex.indexOf(item)>-1&&arrName.cellIndex===item">
           <span v-if="arrName.isChecked" style="display:block;position: relative;top:50%;transform:translateY(-50%);font-size: 20px;">
             {{arrName.nameCN}}</span>
-          <img v-if="!arrName.isChecked" src="@/assets/matching/nameCover.png" style="width: 100%;height: 100%;border-radius:10px;" />
+          <img v-if="!arrName.isChecked" src="@/assets/matching/nameCover.png" style="width: 100%;height: 100%;" />
         </div>
       </div>
     </div>

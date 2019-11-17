@@ -7,6 +7,7 @@ import 'iview/dist/styles/iview.css';
 import router from './router'
 import Crrect from './assets/audio/Correct.wav'
 import Incorrect from './assets/audio/Incorrect.wav'
+import Crrect2 from './assets/audio/Correct2.wav'
 
 Vue.use(iView, {
   i18n: (key, value) => i18n.t(key, value)
@@ -14,7 +15,8 @@ Vue.use(iView, {
 Vue.config.productionTip = false
 
 Vue.prototype.playAudio = (flag) => {
-  let audioSrc=flag?Crrect:Incorrect;
+  console.log(typeof flag)
+  let audioSrc=flag==null?Crrect2:flag?Crrect:Incorrect;
   let buttonAudio = document.getElementById('eventAudio');
   buttonAudio.setAttribute('src',audioSrc)
   buttonAudio.play()
