@@ -1,47 +1,47 @@
 <template>
   <div class="sequence">
     <span class="surplusTime">{{surplusTime}}</span>
-    <!-- <img style="position:absolute;right:20%;top:0%;width: 12.5%;height: 10%;" src="@/assets/star.png" @click="timerStar" />
-    <div v-show="surplusTime!=totalDuration&&!isFinish" style="width: 12.5%;height:10%;background-color: #808080;
-    opacity:.7;border-radius:7px;position:absolute;right:20%;top:0%;z-index: 999;"></div> -->
     <div v-show="isShowTipInfo">
-      <img src="@/assets/text/tipInfo.png" style="width: 100%;height: 100%;z-index: 9999;position: absolute;left: 0;top:0;" />
+      <img src="@/assets/sequence/tipInfo.png" style="width: 100%;height: 100%;z-index: 9999;position: absolute;left: 0;top:0;" />
       <div style="position: absolute;width: 30%;height: 10%;left: 25%;top:50%;z-index: 9999;">
         <div style="height:100%;width: 60%;float: left;display: table;">
           <span style="font-size: 20px;font-weight: bolder;display: table-cell;vertical-align: middle;">本次练习第{{ruleItem.index}}个位置固定为</span></div>
-        <div style="float: left;height:100%;width:15%;border:1px solid #dad9da;font-size: 14px;">
-          <div style="display: table;text-align: center;width: 100%;height: 100%;">
-            <span style="display:table-cell;vertical-align: middle;font-size:25px;font-weight: bold;">{{ruleItem.text}}</span>
+        <div style="float: left;height:100%;width:25%;">
+          <div style="display: table;text-align: left;width: 100%;height: 100%;">
+            <!-- <span style="display:table-cell;vertical-align: middle;font-size:25px;font-weight: bold;">{{ruleItem.text}}</span> -->
+            <img :src="ruleItem.img" style="height: 70%;width: 70%;"/>
           </div>
         </div>
       </div>
-      <img @click="start" src="@/assets/text/btnBegin.png" style="width:9%;height: 17%;position: absolute;top:47%;right:28%;z-index: 9999;" />
+      <img @click="start" src="@/assets/sequence/btnBegin.png" style="width:9%;height: 17%;position: absolute;top:47%;right:28%;z-index: 9999;" />
     </div>
     <div class="lefDiv">
       <div v-if="isStart" :style="{visibility:option.selected?'hidden':'visible'}" @click="selectItem(option,index)" v-for="(option,index) in randomArray"
         :key="index">
-        <span>{{option.text}}</span>
+        <!-- <span>{{option.text}}</span> -->
+        <img :src="option.img" style="width: 100%;height: 100%;" />
       </div>
     </div>
     <div class="container">
       <div class="list" v-for="(arr,index) in selectArry">
         <div style="font-size:0;height: 100%;width: 100%;">
-          <div v-for="(item,i) in arr.data" style="float:left;height:99%;width:24%;border:1px solid #dad9da;display: inline-block;font-size: 14px;">
-            <div style="display: table;text-align: center;width: 100%;height: 100%;">
-              <span style="display:table-cell;vertical-align: middle;font-size:25px;font-weight: bold;">{{item.text}}</span>
+          <div v-for="(item,i) in arr.data" style="float:left;height:100%;width:25%;display: inline-block;">
+            <div style="width: 100%;height: 100%;">
+              <!-- <span style="display:table-cell;vertical-align: middle;font-size:25px;font-weight: bold;">{{item.text}}</span> -->
+              <img :src="item.img" style="height: 100%;width: 100%;"/>
             </div>
           </div>
           <img v-if="arr.showCorrectImg" src="@/assets/correct.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
           <img v-if="arr.showIncorrectImg" src="@/assets/incorrect.png" style="width:27%;height:113%;position:relative;right:-38%;top:-55%;">
         </div>
-        <img v-if="arr.num===currentNumber&&isStart" src="@/assets/text/overUnderLine.png" style="height:3%;width: 100%;" />
-        <img v-else src="@/assets/text/underLine.png" style="height:3%;width: 100%;" />
+        <img v-if="arr.num===currentNumber&&isStart" src="@/assets/sequence/overUnderLine.png" style="height:3%;width: 100%;" />
+        <img v-else src="@/assets/sequence/underLine.png" style="height:3%;width: 100%;" />
       </div>
     </div>
     <div v-show="isRestart" style="position: absolute;left: 0;top:0;width: 100%;height: 100%;">
-      <img src="@/assets/text/restartip.png" style="height:100%;width: 100%;position: absolute;left:0;top:0;z-index: 9999;" />
+      <img src="@/assets/sequence/restartip.png" style="height:100%;width: 100%;position: absolute;left:0;top:0;z-index: 9999;" />
       <span style="color: #fb7b06;font-size: 25px;font-weight: bolder;position: relative;top:38%;left: 5%;z-index: 9999;">错误过多！请重新开始！</span><br />
-      <img @click="restart()" src="@/assets/text/btnRestart.png" style="width:10%;height: 10%;position: relative;top:43%;left:4.5%;z-index: 9999;" />
+      <img @click="restart()" src="@/assets/btnContinu.png" style="width:10%;height: 10%;position: relative;top:43%;left:4.5%;z-index: 9999;" />
     </div>
     <div class="divResult" v-show="isFinish">
       <span style="position: absolute;left: 53%;top: 38%;color: #357dd3;font-size: 40px;font-weight: bolder;">{{totalAnswerNumber}}</span>
@@ -75,16 +75,24 @@
         correctNumber: 0, //答对数量
         ruleItem: {}, //本题答题规则
         randomArray: [{
-          text: '一',
+          text: '0',
+          img:require('@/assets/sequence/b0.png'),
+          sImg:require('@/assets/sequence/s0.png'),
           selected: false
         }, {
-          text: '二',
+          text: '1',
+          img:require('@/assets/sequence/b1.png'),
+          sImg:require('@/assets/sequence/s1.png'),
           selected: false
         }, {
-          text: '三',
+          text: '2',
+          img:require('@/assets/sequence/b2.png'),
+          sImg:require('@/assets/sequence/s2.png'),
           selected: false
         }, {
-          text: '四',
+          text: '3',
+          img:require('@/assets/sequence/b3.png'),
+          sImg:require('@/assets/sequence/s3.png'),
           selected: false
         }],
         isStart:false,//是否已开始
@@ -121,6 +129,7 @@
         if (currentItem.data.length < 4) {
           currentItem.data.push({
             text: item.text,
+            img:item.sImg,
             value: ''
           });
           item.selected = true;
@@ -185,6 +194,7 @@
         this.ruleItem["text"]=itemText[0].text; */
         this.ruleItem.index = itemIndex[0];
         this.ruleItem.text = itemText[0].text;
+        this.ruleItem.img=itemText[0].sImg;
         randonArr(this.randomArray); //随机打乱数组
         for (let i = 0; i < this.subjectNumber; i++) {
           this.selectArry.push({
@@ -313,19 +323,18 @@
   .lefDiv div {
     display: table;
     text-align: center;
-    background-color: #f8f6f8;
+    /* background-color: #f8f6f8; */
     width: 100%;
     height: 18.1%;
     margin: 35% 0px;
-    box-shadow: 5px 5px 5px #484a3b
   }
 
-  .lefDiv div span {
+  /* .lefDiv div span {
     display: table-cell;
     vertical-align: middle;
     font-size: 30px;
     font-weight: bold;
-  }
+  } */
   .divResult{
     width: 100%;
     height: 100%;
