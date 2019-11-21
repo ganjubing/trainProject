@@ -7,9 +7,9 @@
         <div style="height:100%;width: 60%;float: left;display: table;">
           <span style="font-size: 20px;font-weight: bolder;display: table-cell;vertical-align: middle;">本次练习第{{ruleItem.index}}个位置固定为</span></div>
         <div style="float: left;height:100%;width:25%;">
-          <div style="display: table;text-align: left;width: 100%;height: 100%;">
+          <div style="text-align: left;width: 100%;height: 100%;">
             <!-- <span style="display:table-cell;vertical-align: middle;font-size:25px;font-weight: bold;">{{ruleItem.text}}</span> -->
-            <img :src="ruleItem.img" style="height: 70%;width: 70%;"/>
+            <img :src="ruleItem.img" style="height: 100%;width: 70%;"/>
           </div>
         </div>
       </div>
@@ -266,6 +266,7 @@
         this.isFinish = false;
         this.isTimeout=false;
         this.initData();
+        this.timerStar();
       }
     }
   }

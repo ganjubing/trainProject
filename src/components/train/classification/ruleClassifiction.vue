@@ -4,8 +4,9 @@
     <div style="position: absolute;top:18%;left:37.4%;height: 3.7%;width:25.1%;">
       <img src="@/assets/classification/progress.png" :style="{height: '100%',width:progressStep+'%',float: 'left'}">
     </div>
-    <div :class="{'leftItem':true}" :style="borderOjbLeft">
-      <div :class="{'circle':isCircleLeft,'block':isBlockLeft,'triangle':isTriangleLeft}" :style="styleObjectLeft"></div>
+    <div :class="{'leftItem':true}" >
+      <!-- <div :class="{'circle':isCircleLeft,'block':isBlockLeft,'triangle':isTriangleLeft}" :style="styleObjectLeft"></div> -->
+    <img :src="currentItemLeft.img" style="width: 60%;height: 60%;"/>
     </div>
 
     <!-- <div :class="{'mainItem':true,'moveLeft':isMoveLeft,'moveRigth':isMoveRight} " :style="borderObject">
@@ -13,12 +14,13 @@
     </div> -->
     <div :class="{'mainItem':true} ">
       <!-- <div :class="{'circle':isCircle,'block':isBlock,'triangle':isTriangle}" :style="styleObject"></div> -->
-      <img :src="currentItem.img" />
+      <img :src="currentItem.img" style="width: 60%;height: 60%;"/>
     </div>
     <img v-if="isCorrect===true" src="../../../assets/correct.png" style="width: 10%;height: 21%;position:absolute;top:57%;left:57%;" />
     <img v-if="isCorrect===false" src="../../../assets/incorrect.png" style="width: 10%;height: 21%;position:absolute;top:57%;left:57%;" />
-    <div :class="{'rightItem':true}" :style="borderObjRight">
-      <div :class="{'circle':isCircleRight,'block':isBlockRight,'triangle':isTriangleRight}" :style="styleObjectRight"></div>
+    <div :class="{'rightItem':true}">
+      <!-- <div :class="{'circle':isCircleRight,'block':isBlockRight,'triangle':isTriangleRight}" :style="styleObjectRight"></div> -->
+     <img :src="currentItemRight.img" style="width: 60%;height: 60%;"/>
     </div>
     <div style="position: relative;top: 80%;left: 20%;height: 15%;width:65%;">
       <img :src="ruleCorrectimg" @mouseover="changeOver('equal')" @mouseout="changeOut('equal')" @click="checkItem(true)"
@@ -79,43 +81,15 @@
         correctNumber: 0,
         ruleCorrectimg: ruleCorrectImg,
         ruleIncorrectimg: ruleIncorrectImg,
-        isCircle: false,
-        isBlock: false,
-        isTriangle: false,
         finishRuleNumber:0,
         isCorrect:null,
 
-        isCircleLeft: false,
-        isBlockLeft: false,
-        isTriangleLeft: false,
-        borderOjbLeft: {
-          borderColor: '#fff'
-        },
-        styleObjectLeft: {
-          'background-color': '#fff'
-        },
-
-        isCircleRight: false,
-        isBlockRight: false,
-        isTriangleRight: false,
-        borderObjRight: {
-          borderColor: '#fff'
-        },
-        styleObjectRight: {
-          'background-color': '#fff'
-        },
-
         isMoveLeft: false,
         isMoveRight: false,
-        currentShape: '',
-        currentColor: {},
         currentItem:{},
-        styleObject: {},
-        borderObject: {},
 
         isNewRule:false,
         progressStep:0,
-        leftShape: {},
         currentItme: {},
         currentItemLeft:{},
         currentItemRight:{},
@@ -127,21 +101,6 @@
           index:2
 
         }, //当前规则
-        element: ['border', 'shape'],
-        colors: [{
-            name: 'blue',
-            color: '#1d73e9'
-          },
-          {
-            name: 'red',
-            color: '#f43758'
-          },
-          {
-            name: 'green',
-            color: '#16c978'
-          }
-        ],
-        shape: ['circle', 'block', 'triangle'],
         rules: [{
             name: '形状颜色等于绿色',
             eleName: 'shape',
@@ -236,10 +195,9 @@
           'background-color': '#fff'
         }; */
         this.images=imageList();
-        this.currentShape = getRandomArr(this.shape, 1)[0];
+        /* this.currentShape = getRandomArr(this.shape, 1)[0]; */
         this.currentItem=getRandomArr(this.images,1)[0];
-        this.currentColor = getRandomArr(this.colors, 1)[0];
-        var item = getRandomArr(this.element, 1)[0];
+        /* var item = getRandomArr(this.element, 1)[0];
         var borderColor = getRandomArr(this.colors, 1)[0];
         this.borderObject = {
           borderColor: borderColor.color
@@ -270,7 +228,7 @@
           this.styleObject = {
             'border-color': 'transparent transparent ' + this.currentColor.color
           };
-        }
+        } */
       },
       changeOver(val) {
         if (val === 'equal')
@@ -286,8 +244,7 @@
       },
       checkItem(flg) {
         this.totalAnswerNumber++;
-        var status = this.currentRuleItme.color == this.currentItme.color;
-
+        var status =this.currentRuleItme.value===this.currentItem.value.charAt(this.currentRuleItme.index);
         if (flg === status) {
           this.correctNumber++;
           this.isCorrect=true;
@@ -304,6 +261,8 @@
             setTimeout(()=>{
               this.progressStep=0;
               this.isNewRule=false;
+              this.currentItemLeft={};
+              this.currentItemRight={};
             },5000)
           }
 
@@ -313,20 +272,14 @@
           setTimeout(()=>{this.isCorrect=null;},300);
           this.progressStep=0;
         }
-        if (flg) {
+        debugger
+        if (flg&&status||(flg===false&&status===true)) {
           this.isMoveLeft = true;
-          this.borderOjbLeft = this.borderObject;
-          this.isBlockLeft = this.isBlock;
-          this.isCircleLeft = this.isCircle;
-          this.isTriangleLeft = this.isTriangle;
-          this.styleObjectLeft = this.styleObject;
+          this.currentItemLeft=this.currentItem;
         } else {
+          console.log(666)
           this.isMoveRight = true;
-          this.borderObjRight = this.borderObject;
-          this.isBlockRight = this.isBlock;
-          this.isCircleRight = this.isCircle;
-          this.isTriangleRight = this.isTriangle;
-          this.styleObjectRight = this.styleObject;
+          this.currentItemRight=this.currentItem;
         }
         this.initData()
       },
@@ -378,32 +331,6 @@
     font-size: 25px;
   }
 
-  .circle {
-    width: 23%;
-    height: 25%;
-    margin: 30% auto;
-    position: relative;
-    border-radius: 50%;
-  }
-
-  .triangle {
-    width: 23%;
-    height: 25%;
-    margin: 30% auto;
-    position: relative;
-    border-width: 0 30px 30px;
-    border-style: solid;
-    /* border-color: transparent transparent blue; */
-  }
-
-  .block {
-    width: 23%;
-    height: 25%;
-    margin: 30% auto;
-    position: relative;
-    border-radius: 20%;
-  }
-
   .mainItem {
     position: absolute;
     /* border-width: 5px;
@@ -411,30 +338,25 @@
     height: 18%;
     width: 10.2%;
     border-radius: 10px; */
-    top: 35.5%;
-    left: 43%;
+    top: 37%;
+    left: 41%;
   }
 
   .leftItem {
     position: absolute;
-    border-width: 5px;
+    /* border-width: 5px;
     border-style: solid;
     height: 18%;
     width: 10.2%;
-    border-radius: 10px;
-    top: 41%;
-    left: 21%;
+    border-radius: 10px; */
+    top: 37%;
+    left: 17%;
   }
 
   .rightItem {
     position: absolute;
-    border-width: 5px;
-    border-style: solid;
-    height: 18%;
-    width: 10.2%;
-    border-radius: 10px;
-    top: 41%;
-    left: 69.5%;
+    top: 37%;
+    left: 65.5%;
   }
 
   .moveRigth {
