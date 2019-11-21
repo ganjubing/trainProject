@@ -8,8 +8,12 @@
       <div :class="{'circle':isCircleLeft,'block':isBlockLeft,'triangle':isTriangleLeft}" :style="styleObjectLeft"></div>
     </div>
 
-    <div :class="{'mainItem':true,'moveLeft':isMoveLeft,'moveRigth':isMoveRight} " :style="borderObject">
+    <!-- <div :class="{'mainItem':true,'moveLeft':isMoveLeft,'moveRigth':isMoveRight} " :style="borderObject">
       <div :class="{'circle':isCircle,'block':isBlock,'triangle':isTriangle}" :style="styleObject"></div>
+    </div> -->
+    <div :class="{'mainItem':true} ">
+      <!-- <div :class="{'circle':isCircle,'block':isBlock,'triangle':isTriangle}" :style="styleObject"></div> -->
+      <img :src="currentItem.img" />
     </div>
     <img v-if="isCorrect===true" src="../../../assets/correct.png" style="width: 10%;height: 21%;position:absolute;top:57%;left:57%;" />
     <img v-if="isCorrect===false" src="../../../assets/incorrect.png" style="width: 10%;height: 21%;position:absolute;top:57%;left:57%;" />
@@ -49,6 +53,9 @@
     getRandomArr,
     randomNumBoth,
   } from '@/utils/common.js'
+  import {
+    imageList
+  } from '@/data/rule_classifiction.js'
   export default {
     computed: {
       accuracy: function() {
@@ -102,6 +109,7 @@
         isMoveRight: false,
         currentShape: '',
         currentColor: {},
+        currentItem:{},
         styleObject: {},
         borderObject: {},
 
@@ -109,10 +117,15 @@
         progressStep:0,
         leftShape: {},
         currentItme: {},
+        currentItemLeft:{},
+        currentItemRight:{},
         currentRuleItme: {
           name:'',
           eleName: 'shape',
-          color: 'green'
+          color: 'green',
+          value:'2',//对应value值的第三位数是2，如3122，
+          index:2
+
         }, //当前规则
         element: ['border', 'shape'],
         colors: [{
@@ -132,34 +145,47 @@
         rules: [{
             name: '形状颜色等于绿色',
             eleName: 'shape',
-            color: 'green'
+            color: 'green',
+            value:'2',//对应value值的第三位数是2，如3122，
+            index:2
           },
           {
             name: '形状颜色等于蓝色',
             eleName: 'shape',
-            color: 'blue'
+            color: 'blue',
+            value:'3',//对应value值的第三位(索引第位)数是3，如1131，
+            index:2
           },
           {
             name: '形状颜色等于红色',
             eleName: 'shape',
-            color: 'red'
+            color: 'red',
+            value:'1',//对应value值的第三位(索引第位)数是2，如1111，
+            index:2
           },
           {
-            name: '边框颜色等于绿色',
+            name: '外边框颜色等于绿色',
             eleName: 'border',
-            color: 'green'
+            color: 'green',
+            value:'2',//对应value值的第1位(索引第位)数是2，如2111，
+            index:0
           },
           {
-            name: '边框颜色等于蓝色',
+            name: '外边框颜色等于蓝色',
             eleName: 'border',
-            color: 'blue'
+            color: 'blue',
+            value:'3',//对应value值的第1位(索引第位)数是3，如3111，
+            index:0
           },
           {
-            name: '边框颜色等于红色',
+            name: '外边框颜色等于红色',
             eleName: 'border',
-            color: 'red'
+            color: 'red',
+            value:'1',//对应value值的第1位(索引第位)数是1，如1111，
+            index:0
           },
-        ]
+        ],
+        images:[],
       }
     },
     methods: {
@@ -209,8 +235,9 @@
         this.styleObjectRight={
           'background-color': '#fff'
         }; */
-
+        this.images=imageList();
         this.currentShape = getRandomArr(this.shape, 1)[0];
+        this.currentItem=getRandomArr(this.images,1)[0];
         this.currentColor = getRandomArr(this.colors, 1)[0];
         var item = getRandomArr(this.element, 1)[0];
         var borderColor = getRandomArr(this.colors, 1)[0];
@@ -379,13 +406,13 @@
 
   .mainItem {
     position: absolute;
-    border-width: 5px;
+    /* border-width: 5px;
     border-style: solid;
     height: 18%;
     width: 10.2%;
-    border-radius: 10px;
-    top: 41%;
-    left: 45%;
+    border-radius: 10px; */
+    top: 35.5%;
+    left: 43%;
   }
 
   .leftItem {
